@@ -1,5 +1,6 @@
 from playwright.sync_api import sync_playwright
 import json
+import re
 
 SEARCH = "alternance développeur"
 LOCATION = "Montpellier"
@@ -78,7 +79,7 @@ def scrape_meteojob():
                 if not href:
                     continue
 
-                if not href.startswith("/jobs/"):
+                if not re.search(r"/jobs/\d+", href):
                     continue
 
                 if href in seen:
