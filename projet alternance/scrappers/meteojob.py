@@ -7,90 +7,122 @@ MAX_RESULTS = 30
 
 
 def scrape_meteojob():
+
     jobs = []
 
     with sync_playwright() as p:
+
         browser = p.chromium.launch(
-            headless=False,   # mettre True plus tard
+            headless=False,
             slow_mo=200
         )
 
         page = browser.new_page()
 
         print("Ouverture Meteojob...")
-        page.goto("https://www.meteojob.com/", timeout=60000)
 
-        # ----- Gestion cookies -----
+        page.goto(
+            "https://www.meteojob.com/",
+            wait_until="networkidle",
+            timeout=60000
+        )
+
         try:
-            page.locator("#tarteaucitronPersonalize2").click(timeout=3000)
+            page.locator(
+                "#tarteaucitronPersonalize2"
+            ).click(timeout=3000)
+
             print("Cookies acceptés")
+
         except:
             print("Pas de popup cookies")
 
-        # suppression forcée de la bannière si elle reste
-        page.evaluate("""
-        const el = document.getElementById('tarteaucitronRoot');
-        if (el) el.remove();
-        """)
+        page.wait_for_timeout(2000)
 
-        page.wait_for_timeout(1500)
-
-        # ----- Recherche -----
         print("Recherche...")
 
         try:
-            # champ métier visible
-            job_input = page.locator("input[name='what']:visible").first
-            job_input.fill(SEARCH)
 
-            # champ localisation visible
-            location_input = page.locator("input[name='where']:visible").first
-            location_input.fill(LOCATION)
+            inputs = page.locator("input")
+
+            inputs.nth(0).fill(SEARCH)
+            inputs.nth(1).fill(LOCATION)
 
             page.keyboard.press("Enter")
 
         except Exception as e:
-            print("Erreur champs recherche :", e)
+
+            print("Erreur recherche :", e)
+
             browser.close()
             return
 
-        # attendre résultats
         page.wait_for_load_state("networkidle")
-        page.wait_for_timeout(3000)
 
-        # ----- Scraping résultats -----
-        cards = page.locator("article")
-        count = min(cards.count(), MAX_RESULTS)
+        page.wait_for_timeout(4000)
 
-        print(f"{count} offres trouvées")
+        links = page.locator("a")
 
-        for i in range(count):
+        seen = set()
+
+        for i in range(links.count()):
+
             try:
-                card = cards.nth(i)
 
-                title = card.locator("h2").inner_text()
+                link = links.nth(i)
 
-                link = card.locator("span:has-text('Voir l\\'offre')").locator("..").locator("a").first.get_attribute("href")
+                title = link.inner_text().strip()
 
-                if link and link.startswith("/"):
-                    link = "https://www.meteojob.com" + link
+                href = link.get_attribute("href")
 
-                jobs.append({
-                    "title": title,
-                    "location": LOCATION,
-                    "url": link,
-                    "source": "Meteojob"
-                })
+                if not href:
+                    continue
 
-                print(f"{i+1}. {title}")
+                if not href.startswith("/jobs/"):
+                    continue
+
+                if href in seen:
+                    continue
+
+                seen.add(href)
+
+                if href.startswith("/"):
+                    href = (
+                        "https://www.meteojob.com"
+                        + href
+                    )
+
+                jobs.append(
+                    {
+                        "title": title,
+                        "location": LOCATION,
+                        "url": href,
+                        "source": "Meteojob"
+                    }
+                )
+
+                print(
+                    f"{len(jobs)}. {title}"
+                )
+
+                if len(jobs) >= MAX_RESULTS:
+                    break
 
             except Exception as e:
-                print(f"Erreur sur offre {i+1} :", e)
+
+                print(
+                    "Erreur extraction :",
+                    e
+                )
 
         browser.close()
 
-    # ----- Sauvegarde JSON -----
-    with open("meteojob_jobs.json", "w", encoding="utf-8") as f:
+    with open(
+        "meteojob_jobs.json",
+        "w",
+        encoding="utf-8"
+    ) as f:
+
         json.dump(
             jobs,
             f,
@@ -98,7 +130,9 @@ def scrape_meteojob():
             ensure_ascii=False
         )
 
-    print(f"{len(jobs)} offres sauvegardées dans meteojob_jobs.json")
+    print(
+        f"{len(jobs)} offres sauvegardées"
+    )
 
 
 if __name__ == "__main__":
