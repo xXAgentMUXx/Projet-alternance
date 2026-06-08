@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job Scraper Premium</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #4F46E5;
+            --primary-hover: #4338CA;
+            --bg-gradient: linear-gradient(135deg, #f6f8fd 0%, #f1f5f9 100%);
+            --card-bg: rgba(255, 255, 255, 0.9);
+            --text-main: #1f2937;
+            --text-muted: #6b7280;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-gradient);
+            color: var(--text-main);
+            margin: 0;
+            padding: 40px 20px;
+            min-height: 100vh;
+            position: relative;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        /* Header & Search */
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            animation: fadeIn 0.8s ease-out;
+        }
+        .header h1 {
+            font-size: 2.8rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+            background: linear-gradient(to right, #4F46E5, #06b6d4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .header p {
+            color: var(--text-muted);
+            font-size: 1.15rem;
+            margin-bottom: 30px;
+        }
+        
+        /* Search Box */
+        .search-container {
+            background: var(--card-bg);
+            padding: 20px;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            backdrop-filter: blur(10px);
+            max-width: 800px;
+            margin: 0 auto 50px auto;
+            animation: slideDown 0.6s ease-out;
+        }
+        .search-form {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        .input-group {
+            flex: 1;
+            min-width: 200px;
+            position: relative;
+        }
+        .input-group input {
+            width: 100%;
+            padding: 15px 20px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-family: inherit;
+            color: var(--text-main);
+            outline: none;
+            transition: all 0.3s;
+            box-sizing: border-box;
+            background: rgba(255,255,255,0.8);
+        }
+        .input-group input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1);
+            background: #fff;
+        }
+        .custom-select {
+            width: 100%;
+            padding: 15px 20px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-family: inherit;
+            color: var(--text-main);
+            outline: none;
+            transition: all 0.3s;
+            box-sizing: border-box;
+            background: rgba(255,255,255,0.8);
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23131313%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
+            background-repeat: no-repeat;
+            background-position: right 1rem top 50%;
+            background-size: 0.65rem auto;
+        }
+        .custom-select:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1);
+            background-color: #fff;
+        }
+        .search-btn {
+            background: linear-gradient(to right, #4F46E5, #06b6d4);
+            color: white;
+            border: none;
+            padding: 0 30px;
+            border-radius: 12px;
+            font-size: 1.05rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 4px 6px -1px rgba(79, 70, 229, 0.3);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        .search-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 15px -3px rgba(79, 70, 229, 0.4);
+        }
+        
+        /* Jobs Grid */
+        .jobs-title {
+            font-size: 1.5rem;
+            margin-bottom: 25px;
+            color: var(--text-main);
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 10px;
+        }
+        
+        .jobs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 25px;
+        }
+        .job-card {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 28px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            backdrop-filter: blur(10px);
+            display: flex;
+            flex-direction: column;
+            animation: slideUp 0.5s ease-out forwards;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        .job-card:nth-child(n) { animation-delay: calc(n * 0.1s); }
+        .job-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            border-color: rgba(79, 70, 229, 0.3);
+        }
+        .job-source {
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: var(--primary);
+            background: rgba(79, 70, 229, 0.1);
+            padding: 6px 12px;
+            border-radius: 20px;
+            align-self: flex-start;
+            margin-bottom: 15px;
+        }
+        .job-source.indeed { background: rgba(0, 58, 155, 0.1); color: #003a9b; }
+        .job-source.hellowork { background: rgba(252, 108, 5, 0.1); color: #fc6c05; }
+        .job-source.welcome-to-the-jungle { background: rgba(255, 201, 14, 0.2); color: #d19a00; }
+        .job-source.jobteaser { background: rgba(142, 68, 173, 0.1); color: #8e44ad; }
+        .job-source.monster { background: rgba(108, 64, 219, 0.1); color: #6C40DB; }
+        .job-source.france-travail { background: rgba(0, 83, 179, 0.1); color: #0053b3; }
+        
+        .job-title {
+            font-size: 1.35rem;
+            font-weight: 700;
+            margin: 0 0 10px 0;
+            color: var(--text-main);
+            line-height: 1.4;
+        }
+        .job-company {
+            font-size: 1rem;
+            color: var(--text-muted);
+            margin: 0 0 10px 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .job-company::before { content: "🏢"; font-size: 1.1em; }
+        
+        .job-details {
+            display: flex;
+            gap: 15px;
+            margin: 0 0 25px 0;
+            font-size: 0.9rem;
+            color: #64748b;
+        }
+        .job-detail-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .job-action {
+            margin-top: auto;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px 24px;
+            background: var(--primary);
+            color: white;
+            text-decoration: none;
+            border-radius: 12px;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+        .job-action:hover {
+            background: var(--primary-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 8px -1px rgba(79, 70, 229, 0.4);
+        }
+        .no-jobs {
+            text-align: center;
+            padding: 60px;
+            color: var(--text-muted);
+            font-size: 1.25rem;
+            grid-column: 1 / -1;
+            background: rgba(255,255,255,0.7);
+            border-radius: 20px;
+            border: 2px dashed #cbd5e1;
+        }
+        
+        /* Overlay Loading */
+        #loading-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(5px);
+            z-index: 9999;
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid rgba(79, 70, 229, 0.2);
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 20px;
+        }
+        
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+        @keyframes slideUp { to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes slideDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+        
+        /* Delay jobs animation automatically */
+        .job-card:nth-child(1) { animation-delay: 0.1s; }
+        .job-card:nth-child(2) { animation-delay: 0.2s; }
+        .job-card:nth-child(3) { animation-delay: 0.3s; }
+        .job-card:nth-child(4) { animation-delay: 0.4s; }
+        .job-card:nth-child(5) { animation-delay: 0.5s; }
+        .job-card:nth-child(6) { animation-delay: 0.6s; }
+        .job-card:nth-child(7) { animation-delay: 0.7s; }
+        .job-card:nth-child(8) { animation-delay: 0.8s; }
+        .job-card:nth-child(9) { animation-delay: 0.9s; }
+        .job-card:nth-child(n+10) { animation-delay: 1s; }
+        
+        @media (max-width: 768px) {
+            .search-form { flex-direction: column; }
+            .search-btn { padding: 15px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Loading Overlay -->
+    <div id="loading-overlay">
+        <div class="spinner"></div>
+        <h2 style="color: var(--text-main); font-weight: 600;">Recherche globale en cours...</h2>
+        <p style="color: var(--text-muted); font-size: 0.95rem;">Exploration de 6 sources (Indeed, HelloWork, WTJ, Jobteaser, Monster, Pôle Emploi).<br>Cela peut prendre un peu plus de temps que d'habitude.</p>
+    </div>
+
+    <div class="container">
+        <div class="header">
+            <h1>Trouvez le job de vos rêves</h1>
+            <p>Recherchez des offres spécifiques partout en France</p>
+        </div>
+
+        <!-- Search Bar -->
+        <div class="search-container">
+            <form action="/search" method="POST" id="search-form" onsubmit="showLoading()">
+                <div class="search-form">
+                    <div class="input-group">
+                        <input type="text" name="keyword" placeholder="Poste (ex: Chef de Projet)" required>
+                    </div>
+                    <div class="input-group">
+                        <input type="text" name="location" placeholder="Zone (ex: Paris, Remote)" required>
+                    </div>
+                    <div class="input-group" style="min-width: 160px; flex: 0.7;">
+                        <select name="job_type" class="custom-select">
+                            <option value="">Tous les types</option>
+                            <option value="Alternance">Alternance</option>
+                            <option value="CDI">CDI</option>
+                            <option value="CDD">CDD</option>
+                            <option value="Stage">Stage</option>
+                            <option value="Freelance">Freelance</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="search-btn">🔍 Chercher</button>
+                </div>
+            </form>
+        </div>
+
+        {% if jobs %}
+            <h2 class="jobs-title">Résultats récents ({{ jobs|length }} offres)</h2>
+        {% endif %}
+
+        <div class="jobs-grid">
+            {% if jobs %}
+                {% for job in jobs %}
+                <div class="job-card">
+                    <span class="job-source {{ job[3]|lower|replace(' ', '-') }}">{{ job[3] }}</span>
+                    <h2 class="job-title">{{ job[0] }}</h2>
+                    <p class="job-company">{{ job[1] }}</p>
+                    <div class="job-details">
+                        <span class="job-detail-item">📍 {{ job[4] }}</span>
+                        <span class="job-detail-item">💼 {{ job[5] }}</span>
+                    </div>
+                    <a href="{{ job[2] }}" target="_blank" class="job-action">Voir l'offre →</a>
+                </div>
+                {% endfor %}
+            {% else %}
+                <div class="no-jobs">
+                    <p>🚀 Aucune offre en base de données. Lancez une recherche !</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <script>
+        function showLoading() {
+            document.getElementById('loading-overlay').style.display = 'flex';
+        }
+    </script>
+</body>
+</html>

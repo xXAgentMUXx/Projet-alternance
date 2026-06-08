@@ -1,0 +1,35 @@
+{
+  "timestamp": "2026-06-07T15:22:00.916702+00:00",
+  "source_results": {
+    "linkedin": {
+      "total_jobs": 7,
+      "new_jobs": 7
+    },
+    "indeed": {
+      "total_jobs": 6,
+      "new_jobs": 6
+    },
+    "meteojob": {
+      "total_jobs": 3,
+      "new_jobs": 3
+    },
+    "bonne_alternance": {
+      "total_jobs": 245,
+      "new_jobs": 245
+    },
+    "apec": {
+      "total_jobs": 9,
+      "new_jobs": 5
+    },
+    "hellowork": {
+      "total_jobs": 37,
+      "new_jobs": 37
+    },
+    "francetravail": {
+      "total_jobs": 101,
+      "new_jobs": 101
+    }
+  },
+  "total_jobs": 408,
+  "total_new_jobs": 404
+}

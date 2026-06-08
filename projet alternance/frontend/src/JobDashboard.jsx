@@ -4,7 +4,8 @@ import { useNavigate } from "react-router-dom";
 const SOURCE_COLORS = {
   offres_emploi_lba:        "bg-blue-100 text-blue-700",
   recruteur_lba:            "bg-emerald-100 text-emerald-700",
-  "France Travail":         "bg-orange-100 text-orange-700",
+  "France Travail":        "bg-orange-100 text-orange-700",
+  HelloWork:                "bg-cyan-100 text-cyan-700",
   PASS:                     "bg-purple-100 text-purple-700",
   default:                  "bg-gray-100 text-gray-600",
 };
@@ -163,12 +164,21 @@ export default function JobDashboard({ applications, setApplications, blockedCom
     Indeed:            [],
     "Bonne Alternance": [],
     Meteojob:          [],
+    APEC:              [],
+    HelloWork:         [],
+    "France Travail": [],
   });
 
   const [selectedJob, setSelectedJob] = React.useState(null);
   const [keyword,     setKeyword]     = React.useState("");
   const [city,        setCity]        = React.useState("");
   const [loading,     setLoading]     = React.useState(false);
+  const [schedulerStatus, setSchedulerStatus] = React.useState({
+    nextRunTime: null,
+    countdown: null,
+    autoRunning: false,
+    manualEnabled: true,
+  });
 
   const [filterType, setFilterType] = React.useState("tout");
 
@@ -183,6 +193,29 @@ export default function JobDashboard({ applications, setApplications, blockedCom
     return result;
   };
 
+  const formatCountdown = (seconds) => {
+    if (seconds === null || seconds === undefined) return "--:--:--";
+    const hours = Math.floor(seconds / 3600);
+    const minutes = Math.floor((seconds % 3600) / 60);
+    const secs = seconds % 60;
+    return `${String(hours).padStart(2, "0")}:${String(minutes).padStart(2, "0")}:${String(secs).padStart(2, "0")}`;
+  };
+
+  const fetchSchedulerStatus = async () => {
+    try {
+      const res = await fetch("http://localhost:8000/scheduler-status");
+      const data = await res.json();
+      setSchedulerStatus({
+        nextRunTime: data.next_run_time ? new Date(data.next_run_time) : null,
+        countdown: data.countdown,
+        autoRunning: data.auto_running,
+        manualEnabled: data.manual_enabled,
+      });
+    } catch (err) {
+      console.error("Erreur scheduler status", err);
+    }
+  };
+
   const getTimeAgo = (dateString) => {
     const diffDays = Math.floor(
       (new Date() - new Date(dateString)) / (1000 * 60 * 60 * 24)
@@ -190,6 +223,28 @@ export default function JobDashboard({ applications, setApplications, blockedCom
     if (diffDays < 30) return `${diffDays} jour${diffDays > 1 ? "s" : ""}`;
     return `${Math.floor(diffDays / 30)} mois`;
   };
+
+  React.useEffect(() => {
+    fetchSchedulerStatus();
+    const intervalId = setInterval(fetchSchedulerStatus, 30000);
+    return () => clearInterval(intervalId);
+  }, []);
+
+  React.useEffect(() => {
+    if (!schedulerStatus.nextRunTime) return;
+    const timerId = setInterval(() => {
+      setSchedulerStatus((prev) => {
+        if (!prev.nextRunTime) return prev;
+        const countdown = Math.max(0, Math.floor((new Date(prev.nextRunTime) - new Date()) / 1000));
+        return {
+          ...prev,
+          countdown,
+          manualEnabled: !prev.autoRunning && countdown > 0,
+        };
+      });
+    }, 1000);
+    return () => clearInterval(timerId);
+  }, [schedulerStatus.nextRunTime]);
 
   const findApplication = (job) =>
     applications.find(
@@ -227,6 +282,7 @@ export default function JobDashboard({ applications, setApplications, blockedCom
     setSelectedJob(null);
   };
   const fetchAll = async () => {
+    if (!schedulerStatus.manualEnabled) return;
     setLoading(true);
     try {
       const res  = await fetch("http://localhost:8000/search-all", {
@@ -240,6 +296,9 @@ export default function JobDashboard({ applications, setApplications, blockedCom
         Indeed:            data.Indeed           || [],
         "Bonne Alternance": data["Bonne Alternance"] || [],
         Meteojob:          data.Meteojob         || [],
+        APEC:              data.APEC             || [],
+        HelloWork:         data.HelloWork        || [],
+        "France Travail": data["France Travail"] || [],
       });
     } catch (err) {
       console.error(err);
@@ -249,6 +308,7 @@ export default function JobDashboard({ applications, setApplications, blockedCom
   };
 
   const fetchPlatform = async (platform) => {
+    if (!schedulerStatus.manualEnabled) return;
     setLoading(true);
     try {
       const res  = await fetch(`http://localhost:8000/search/${platform}`, {
@@ -306,10 +366,28 @@ export default function JobDashboard({ applications, setApplications, blockedCom
           Applications
         </button>
         <button
+          onClick={() => navigate("/cover-letter")}
+          className="bg-indigo-600 text-white px-5 py-2 rounded-xl hover:bg-indigo-700"
+        >
+          Cover Letter
+        </button>
+        <button
+          onClick={() => navigate("/applications")}
+          className="bg-emerald-600 text-white px-5 py-2 rounded-xl hover:bg-emerald-700"
+        >
+          Applications
+        </button>
+        <button
           onClick={() => navigate("/blocked-companies")}
           className="bg-red-600 text-white px-5 py-2 rounded-xl hover:bg-red-700"
         >
           Gérer les blocs ({blockedCompanies.length})
+        </button>
+        <button
+          onClick={() => navigate("/notifications")}
+          className="bg-violet-600 text-white px-5 py-2 rounded-xl hover:bg-violet-700"
+        >
+          Notifications
         </button>
       </div>
       <div className="bg-white rounded-2xl shadow p-4 mb-4 flex gap-3 flex-wrap items-center">
@@ -329,10 +407,26 @@ export default function JobDashboard({ applications, setApplications, blockedCom
         />
         <button
           onClick={fetchAll}
-          className="bg-blue-600 text-white px-6 py-3 rounded-xl hover:bg-blue-700 font-semibold"
+          className={`px-6 py-3 rounded-xl font-semibold ${schedulerStatus.manualEnabled && !loading ? "bg-blue-600 hover:bg-blue-700 text-white" : "bg-slate-300 text-slate-600 cursor-not-allowed"}`}
+          disabled={!schedulerStatus.manualEnabled || loading}
         >
           Rechercher tout
         </button>
+      </div>
+      <div className="text-center mb-4 text-sm text-gray-600">
+        {schedulerStatus.autoRunning ? (
+          <span className="font-semibold text-blue-700">
+            Recherche automatique en cours — recherches manuelles désactivées
+          </span>
+        ) : schedulerStatus.manualEnabled ? (
+          <span>
+            Prochaine recherche automatique dans <span className="font-semibold">{formatCountdown(schedulerStatus.countdown)}</span>
+          </span>
+        ) : (
+          <span className="font-semibold text-orange-700">
+            Recherche automatique imminente — recherches manuelles désactivées
+          </span>
+        )}
       </div>
       {jobs["Bonne Alternance"].length > 0 && (
         <div className="flex justify-center gap-2 mb-4">
@@ -378,7 +472,8 @@ export default function JobDashboard({ applications, setApplications, blockedCom
 
               <button
                 onClick={() => fetchPlatform(platform)}
-                className="w-full mb-3 bg-purple-600 text-white py-2 rounded-xl hover:bg-purple-700 text-sm"
+                className={`w-full mb-3 py-2 rounded-xl text-sm ${schedulerStatus.manualEnabled && !loading ? "bg-purple-600 hover:bg-purple-700 text-white" : "bg-slate-300 text-slate-600 cursor-not-allowed"}`}
+                disabled={!schedulerStatus.manualEnabled || loading}
               >
                 Rechercher {platform}
               </button>

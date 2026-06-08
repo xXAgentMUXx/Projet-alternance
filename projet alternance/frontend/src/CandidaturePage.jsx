@@ -8,99 +8,212 @@ export default function CandidaturePage() {
 
   const person = location.state?.person || {};
   const initialStatus = location.state?.status || null;
-  const savedCompany = location.state?.company || person.current_company || person.company || "";
 
-  const [companyDescription, setCompanyDescription] = React.useState("");
-  const [jobDescription, setJobDescription] = React.useState("");
+  const savedCompany =
+    location.state?.company ||
+    person.current_company ||
+    person.company ||
+    "";
+
+  const [companyDescription, setCompanyDescription] =
+    React.useState("");
+
+  const [jobDescription, setJobDescription] =
+    React.useState("");
+
+  const [motivationLetter, setMotivationLetter] =
+    React.useState("");
 
   const [generatedMessage, setGeneratedMessage] =
     React.useState("");
 
   const [loading, setLoading] =
     React.useState(false);
-  const [inviteStatus, setInviteStatus] = React.useState(initialStatus);
+
+  const [inviteStatus, setInviteStatus] =
+    React.useState(initialStatus);
 
   React.useEffect(() => {
-    // try to read status from localStorage if not provided (for the same saved company)
+
     if (!inviteStatus) {
+
       try {
-        const raw = localStorage.getItem("addedPeople");
+
+        const raw =
+          localStorage.getItem("addedPeople");
+
         if (raw) {
+
           const arr = JSON.parse(raw);
+
           const found = arr.find(
-            (p) => (p.profile_link === person.profile_link || p.id === person.id) && p.savedForCompany === savedCompany
+            (p) =>
+              (
+                p.profile_link === person.profile_link ||
+                p.id === person.id
+              ) &&
+              p.savedForCompany === savedCompany
           );
-          if (found && found.status) setInviteStatus(found.status);
+
+          if (found?.status) {
+            setInviteStatus(found.status);
+          }
+
         }
-      } catch (e) {}
+
+      } catch (e) {
+        console.error(e);
+      }
+
     }
-  }, [inviteStatus, person]);
+
+  }, [inviteStatus, person, savedCompany]);
 
   const handleCreateMessage = async () => {
+
     try {
+
       setLoading(true);
 
       const payload = {
-        contact_name: person.name || "",
-        company_name: person.current_company || person.company || "",
-        headline: person.headline || "",
-        company_description: companyDescription,
-        job_description: jobDescription,
+
+        contact_name:
+          person.name || "",
+
+        company_name:
+          person.current_company ||
+          person.company ||
+          "",
+
+        headline:
+          person.headline || "",
+
+        company_description:
+          companyDescription,
+
+        job_description:
+          jobDescription,
+
+        motivation_letter:
+          motivationLetter
+
       };
 
-      const response = await fetch("http://localhost:8000/generate-message", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
+      console.log("Payload envoyé :", payload);
 
-      const data = await response.json();
+      const response = await fetch(
+        "http://localhost:8000/generate-message",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type":
+              "application/json"
+          },
+          body: JSON.stringify(payload)
+        }
+      );
+
+      const data =
+        await response.json();
+
+      console.log(data);
 
       if (data.error) {
+
         alert(data.error);
         return;
+
       }
 
-      setGeneratedMessage(data.message || "");
+      setGeneratedMessage(
+        data.message || ""
+      );
+
     } catch (err) {
+
       console.error(err);
-      alert("Erreur lors de la génération");
+
+      alert(
+        "Erreur lors de la génération"
+      );
+
     } finally {
+
       setLoading(false);
+
     }
+
   };
 
-  const _saveStatusToStorage = (status) => {
+  const saveStatus = (status) => {
+
     try {
-      const raw = localStorage.getItem("addedPeople");
-      const arr = raw ? JSON.parse(raw) : [];
+
+      const raw =
+        localStorage.getItem("addedPeople");
+
+      const arr =
+        raw ? JSON.parse(raw) : [];
+
       let found = false;
+
       const next = arr.map((p) => {
-        if ((p.profile_link === person.profile_link || p.id === person.id) && p.savedForCompany === savedCompany) {
+
+        if (
+          (
+            p.profile_link === person.profile_link ||
+            p.id === person.id
+          ) &&
+          p.savedForCompany === savedCompany
+        ) {
+
           found = true;
-          return { ...p, status };
+
+          return {
+            ...p,
+            status
+          };
+
         }
+
         return p;
+
       });
 
       if (!found) {
-        // add a new saved entry for this company
-        next.push({ ...person, status, savedForCompany: savedCompany });
+
+        next.push({
+          ...person,
+          status,
+          savedForCompany:
+            savedCompany
+        });
+
       }
-      localStorage.setItem("addedPeople", JSON.stringify(next));
-    } catch (e) {}
+
+      localStorage.setItem(
+        "addedPeople",
+        JSON.stringify(next)
+      );
+
+    } catch (e) {
+      console.error(e);
+    }
+
   };
 
   const markInvited = () => {
+
     setInviteStatus("invited");
-    _saveStatusToStorage("invited");
-    alert("Statut mis à jour : invitée");
+    saveStatus("invited");
+
   };
 
   const markNotInvited = () => {
+
     setInviteStatus("not_invited");
-    _saveStatusToStorage("not_invited");
-    alert("Statut mis à jour : pas invitée");
+    saveStatus("not_invited");
+
   };
 
   return (
@@ -123,6 +236,7 @@ export default function CandidaturePage() {
           </h1>
 
           {person.name && (
+
             <div className="mb-6 p-4 bg-slate-50 rounded-2xl">
 
               <h2 className="font-bold text-lg">
@@ -147,8 +261,17 @@ export default function CandidaturePage() {
               )}
 
               <div className="mt-3 flex items-center gap-3">
-                <span className={`px-2 py-1 rounded-full text-sm ${inviteStatus === 'invited' ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'}`}>
-                  {inviteStatus === 'invited' ? 'Invitée' : 'Pas invitée'}
+
+                <span
+                  className={`px-2 py-1 rounded-full text-sm ${
+                    inviteStatus === "invited"
+                      ? "bg-green-100 text-green-800"
+                      : "bg-gray-100 text-gray-800"
+                  }`}
+                >
+                  {inviteStatus === "invited"
+                    ? "Invitée"
+                    : "Pas invitée"}
                 </span>
 
                 <button
@@ -164,9 +287,11 @@ export default function CandidaturePage() {
                 >
                   Marquer pas invitée
                 </button>
+
               </div>
 
             </div>
+
           )}
 
           <div className="grid gap-6">
@@ -184,9 +309,8 @@ export default function CandidaturePage() {
                     e.target.value
                   )
                 }
-                rows={6}
-                placeholder="Collez la présentation de l'entreprise..."
-                className="w-full border rounded-2xl p-4 resize-none"
+                rows={5}
+                className="w-full border rounded-2xl p-4"
               />
 
             </div>
@@ -205,8 +329,27 @@ export default function CandidaturePage() {
                   )
                 }
                 rows={8}
-                placeholder="Collez l'offre d'emploi..."
-                className="w-full border rounded-2xl p-4 resize-none"
+                className="w-full border rounded-2xl p-4"
+              />
+
+            </div>
+
+            <div>
+
+              <label className="block font-semibold mb-2">
+                Lettre de motivation
+              </label>
+
+              <textarea
+                value={motivationLetter}
+                onChange={(e) =>
+                  setMotivationLetter(
+                    e.target.value
+                  )
+                }
+                rows={12}
+                placeholder="Collez ici votre lettre de motivation générée..."
+                className="w-full border rounded-2xl p-4"
               />
 
             </div>
@@ -262,14 +405,7 @@ export default function CandidaturePage() {
 
             </div>
 
-            <pre
-              className="
-                whitespace-pre-wrap
-                text-sm
-                leading-7
-                text-gray-800
-              "
-            >
+            <pre className="whitespace-pre-wrap text-sm leading-7 text-gray-800">
               {generatedMessage}
             </pre>
 
@@ -282,4 +418,5 @@ export default function CandidaturePage() {
     </div>
 
   );
+
 }

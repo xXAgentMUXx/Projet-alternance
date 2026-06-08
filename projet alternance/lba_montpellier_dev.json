@@ -21,8 +21,8 @@
             "E1205"
         ],
         "total_offres": 2,
-        "total_spontanees": 238,
-        "total": 240
+        "total_spontanees": 243,
+        "total": 245
     },
     "offres_emploi": [
         {
@@ -172,20 +172,6 @@
         {
             "source": "candidature_spontanee",
             "title": "",
-            "company": "AVIPSY",
-            "location": "73 ALLEE KLEBER 34000 MONTPELLIER",
-            "url": "https://labonnealternance.apprentissage.beta.gouv.fr/emploi/recruteurs_lba/91432967700019/avipsy",
-            "phone": "",
-            "description": "",
-            "naf": "Programmation informatique",
-            "opco": "Opco entreprises de proximité",
-            "size": "1-2",
-            "website": "",
-            "siret": "91432967700019"
-        },
-        {
-            "source": "candidature_spontanee",
-            "title": "",
             "company": "VIVIARTO",
             "location": "73 allee Kleber 34000 MONTPELLIER",
             "url": "https://labonnealternance.apprentissage.beta.gouv.fr/emploi/recruteurs_lba/83412345700030/viviarto",
@@ -196,6 +182,20 @@
             "size": "0-0",
             "website": "",
             "siret": "83412345700030"
+        },
+        {
+            "source": "candidature_spontanee",
+            "title": "",
+            "company": "AVIPSY",
+            "location": "73 ALLEE KLEBER 34000 MONTPELLIER",
+            "url": "https://labonnealternance.apprentissage.beta.gouv.fr/emploi/recruteurs_lba/91432967700019/avipsy",
+            "phone": "",
+            "description": "",
+            "naf": "Programmation informatique",
+            "opco": "Opco entreprises de proximité",
+            "size": "1-2",
+            "website": "",
+            "siret": "91432967700019"
         },
         {
             "source": "candidature_spontanee",
@@ -266,20 +266,6 @@
             "size": "3-5",
             "website": "",
             "siret": "88917657400024"
-        },
-        {
-            "source": "candidature_spontanee",
-            "title": "",
-            "company": "ASS DEVELOPPEMENT OUTIL RADIOPHONIQUE ETUDIANT MONTPELLIER",
-            "location": "1 RUE DES ACACIAS 34090 MONTPELLIER",
-            "url": "https://labonnealternance.apprentissage.beta.gouv.fr/emploi/recruteurs_lba/43199519000029/ass-developpement-outil-radiophonique-etudiant-montpellier",
-            "phone": "0467527841",
-            "description": "",
-            "naf": "Édition et diffusion de programmes radio",
-            "opco": "AFDAS",
-            "size": "3-5",
-            "website": "",
-            "siret": "43199519000029"
         },
         {
             "source": "candidature_spontanee",
@@ -438,20 +424,6 @@
         {
             "source": "candidature_spontanee",
             "title": "",
-            "company": "ARMONIE",
-            "location": "895 rue de la Vieille Poste 34000 MONTPELLIER",
-            "url": "https://labonnealternance.apprentissage.beta.gouv.fr/emploi/recruteurs_lba/52849125100054/armonie",
-            "phone": "",
-            "description": "",
-            "naf": "Conseil en systèmes et logiciels informatiques",
-            "opco": "ATLAS",
-            "size": "20-49",
-            "website": "",
-            "siret": "52849125100054"
-        },
-        {
-            "source": "candidature_spontanee",
-            "title": "",
             "company": "NOTOS",
             "location": "895 rue de la Vieille Poste 34000 MONTPELLIER",
             "url": "https://labonnealternance.apprentissage.beta.gouv.fr/emploi/recruteurs_lba/45323619200036/notos",
@@ -476,6 +448,20 @@
             "size": "20-49",
             "website": "",
             "siret": "79334286600050"
+        },
+        {
+            "source": "candidature_spontanee",
+            "title": "",
+            "company": "ARMONIE",
+            "location": "895 rue de la Vieille Poste 34000 MONTPELLIER",
+            "url": "https://labonnealternance.apprentissage.beta.gouv.fr/emploi/recruteurs_lba/52849125100054/armonie",
+            "phone": "",
+            "description": "",
+            "naf": "Conseil en systèmes et logiciels informatiques",
+            "opco": "ATLAS",
+            "size": "20-49",
+            "website": "",
+            "siret": "52849125100054"
         },
         {
             "source": "candidature_spontanee",
@@ -606,6 +592,20 @@
         {
             "source": "candidature_spontanee",
             "title": "",
+            "company": "SPORTIHOME",
+            "location": "ROND-POINT BENJAMIN FRANKLIN 34000 MONTPELLIER",
+            "url": "https://labonnealternance.apprentissage.beta.gouv.fr/emploi/recruteurs_lba/82513460400016/sportihome",
+            "phone": "",
+            "description": "",
+            "naf": "Programmation informatique",
+            "opco": "ATLAS",
+            "size": "10-19",
+            "website": "",
+            "siret": "82513460400016"
+        },
+        {
+            "source": "candidature_spontanee",
+            "title": "",
             "company": "BARBABLANKA",
             "location": "rond point Benjamin Franklin 34000 MONTPELLIER",
             "url": "https://labonnealternance.apprentissage.beta.gouv.fr/emploi/recruteurs_lba/83246319400023/barbablanka",
@@ -634,20 +634,6 @@
         {
             "source": "candidature_spontanee",
             "title": "",
-            "company": "SPORTIHOME",
-            "location": "ROND-POINT BENJAMIN FRANKLIN 34000 MONTPELLIER",
-            "url": "https://labonnealternance.apprentissage.beta.gouv.fr/emploi/recruteurs_lba/82513460400016/sportihome",
-            "phone": "",
-            "description": "",
-            "naf": "Programmation informatique",
-            "opco": "ATLAS",
-            "size": "10-19",
-            "website": "",
-            "siret": "82513460400016"
-        },
-        {
-            "source": "candidature_spontanee",
-            "title": "",
             "company": "GOWOD",
             "location": "1025 avenue Henri Becquerel 34000 MONTPELLIER",
             "url": "https://labonnealternance.apprentissage.beta.gouv.fr/emploi/recruteurs_lba/89888516500024/gowod",
@@ -662,20 +648,6 @@
         {
             "source": "candidature_spontanee",
             "title": "",
-            "company": "EFISENS",
-            "location": "1025 avenue Henri Becquerel 34000 MONTPELLIER",
-            "url": "https://labonnealternance.apprentissage.beta.gouv.fr/emploi/recruteurs_lba/44317487500049/efisens",
-            "phone": "",
-            "description": "",
-            "naf": "Conseil en systèmes et logiciels informatiques",
-            "opco": "ATLAS",
-            "size": "3-5",
-            "website": "",
-            "siret": "44317487500049"
-        },
-        {
-            "source": "candidature_spontanee",
-            "title": "",
             "company": "WMSOCIETY",
             "location": "1025 avenue Henri Becquerel 34000 MONTPELLIER",
             "url": "https://labonnealternance.apprentissage.beta.gouv.fr/emploi/recruteurs_lba/90980486600012/wmsociety",
@@ -686,6 +658,20 @@
             "size": "1-2",
             "website": "",
             "siret": "90980486600012"
+        },
+        {
+            "source": "candidature_spontanee",
+            "title": "",
+            "company": "EFISENS",
+            "location": "1025 avenue Henri Becquerel 34000 MONTPELLIER",
+            "url": "https://labonnealternance.apprentissage.beta.gouv.fr/emploi/recruteurs_lba/44317487500049/efisens",
+            "phone": "",
+            "description": "",
+            "naf": "Conseil en systèmes et logiciels informatiques",
+            "opco": "ATLAS",
+            "size": "3-5",
+            "website": "",
+            "siret": "44317487500049"
         },
         {
             "source": "candidature_spontanee",
@@ -830,20 +816,6 @@
         {
             "source": "candidature_spontanee",
             "title": "",
-            "company": "INCITIUS SOFTWARE",
-            "location": "672 RUE DU MAS DE VERCHANT 34000 MONTPELLIER",
-            "url": "https://labonnealternance.apprentissage.beta.gouv.fr/emploi/recruteurs_lba/50490958100028/incitius-software",
-            "phone": "",
-            "description": "",
-            "naf": "Conseil en systèmes et logiciels informatiques",
-            "opco": "ATLAS",
-            "size": "6-9",
-            "website": "",
-            "siret": "50490958100028"
-        },
-        {
-            "source": "candidature_spontanee",
-            "title": "",
             "company": "FRUITION SCIENCES",
             "location": "672 RUE DU MAS DE VERCHANT 34000 MONTPELLIER",
             "url": "https://labonnealternance.apprentissage.beta.gouv.fr/emploi/recruteurs_lba/51019330300029/fruition-sciences",
@@ -858,6 +830,20 @@
         {
             "source": "candidature_spontanee",
             "title": "",
+            "company": "INCITIUS SOFTWARE",
+            "location": "672 RUE DU MAS DE VERCHANT 34000 MONTPELLIER",
+            "url": "https://labonnealternance.apprentissage.beta.gouv.fr/emploi/recruteurs_lba/50490958100028/incitius-software",
+            "phone": "",
+            "description": "",
+            "naf": "Conseil en systèmes et logiciels informatiques",
+            "opco": "ATLAS",
+            "size": "6-9",
+            "website": "",
+            "siret": "50490958100028"
+        },
+        {
+            "source": "candidature_spontanee",
+            "title": "",
             "company": "DIGIAPP",
             "location": "2 allee Charles Robert Darwin 34170 CASTELNAU-LE-LEZ",
             "url": "https://labonnealternance.apprentissage.beta.gouv.fr/emploi/recruteurs_lba/81172168700036/digiapp",
@@ -868,6 +854,20 @@
             "size": "10-19",
             "website": "",
             "siret": "81172168700036"
+        },
+        {
+            "source": "candidature_spontanee",
+            "title": "",
+            "company": "AUDIO SUD SARL",
+            "location": "529 RUE FAVRE DE SAINT CASTOR 34080 MONTPELLIER",
+            "url": "https://labonnealternance.apprentissage.beta.gouv.fr/emploi/recruteurs_lba/31761583900022/audio-sud-sarl",
+            "phone": "0467274305",
+            "description": "",
+            "naf": "Fabrication de produits électroniques grand public",
+            "opco": "AKTO / Opco entreprises et salariés des services à forte intensité de main d'oeuvre",
+            "size": "6-9",
+            "website": "",
+            "siret": "31761583900022"
         },
         {
             "source": "candidature_spontanee",
@@ -900,6 +900,20 @@
         {
             "source": "candidature_spontanee",
             "title": "",
+            "company": "BIMER SERVICES",
+            "location": "621 rue Georges Melies 34000 MONTPELLIER",
+            "url": "https://labonnealternance.apprentissage.beta.gouv.fr/emploi/recruteurs_lba/82910277100021/bimer-services",
+            "phone": "",
+            "description": "",
+            "naf": "Programmation informatique",
+            "opco": "ATLAS",
+            "size": "3-5",
+            "website": "",
+            "siret": "82910277100021"
+        },
+        {
+            "source": "candidature_spontanee",
+            "title": "",
             "company": "E.MEDICOM SERVICES",
             "location": "621 rue Georges Melies 34000 MONTPELLIER",
             "url": "https://labonnealternance.apprentissage.beta.gouv.fr/emploi/recruteurs_lba/95174041400010/e-medicom-services",
@@ -928,20 +942,6 @@
         {
             "source": "candidature_spontanee",
             "title": "",
-            "company": "BIMER SERVICES",
-            "location": "621 rue Georges Melies 34000 MONTPELLIER",
-            "url": "https://labonnealternance.apprentissage.beta.gouv.fr/emploi/recruteurs_lba/82910277100021/bimer-services",
-            "phone": "",
-            "description": "",
-            "naf": "Programmation informatique",
-            "opco": "ATLAS",
-            "size": "3-5",
-            "website": "",
-            "siret": "82910277100021"
-        },
-        {
-            "source": "candidature_spontanee",
-            "title": "",
             "company": "IZYDESK",
             "location": "60 rue Bernard Giraudeau 34080 MONTPELLIER",
             "url": "https://labonnealternance.apprentissage.beta.gouv.fr/emploi/recruteurs_lba/92519378100018/izydesk",
@@ -966,6 +966,20 @@
             "size": "3-5",
             "website": "",
             "siret": "52098937700053"
+        },
+        {
+            "source": "candidature_spontanee",
+            "title": "",
+            "company": "M.W.S.C",
+            "location": "48 rue Claude Balbastre 34070 MONTPELLIER",
+            "url": "https://labonnealternance.apprentissage.beta.gouv.fr/emploi/recruteurs_lba/79878954100033/m-w-s-c",
+            "phone": "0434816960",
+            "description": "",
+            "naf": "Fabrication de produits électroniques grand public",
+            "opco": "OPCO 2i",
+            "size": "10-19",
+            "website": "",
+            "siret": "79878954100033"
         },
         {
             "source": "candidature_spontanee",
@@ -1208,20 +1222,6 @@
         {
             "source": "candidature_spontanee",
             "title": "",
-            "company": "SEPTEO SOLUTIONS AVOCATS",
-            "location": "194 AVENUE DE LA GARE SUD DE FRANCE 34970 LATTES",
-            "url": "https://labonnealternance.apprentissage.beta.gouv.fr/emploi/recruteurs_lba/35044680300115/septeo-solutions-avocats",
-            "phone": "0467159740",
-            "description": "",
-            "naf": "Edition de logiciels applicatifs",
-            "opco": "ATLAS",
-            "size": "100-199",
-            "website": "",
-            "siret": "35044680300115"
-        },
-        {
-            "source": "candidature_spontanee",
-            "title": "",
             "company": "SEPTEO SOLUTIONS NOTAIRES",
             "location": "194 avenue de la Gare Sud de France 34970 LATTES",
             "url": "https://labonnealternance.apprentissage.beta.gouv.fr/emploi/recruteurs_lba/34806504600107/septeo-solutions-notaires",
@@ -1232,6 +1232,20 @@
             "size": "250-499",
             "website": "",
             "siret": "34806504600107"
+        },
+        {
+            "source": "candidature_spontanee",
+            "title": "",
+            "company": "SEPTEO SOLUTIONS AVOCATS",
+            "location": "194 AVENUE DE LA GARE SUD DE FRANCE 34970 LATTES",
+            "url": "https://labonnealternance.apprentissage.beta.gouv.fr/emploi/recruteurs_lba/35044680300115/septeo-solutions-avocats",
+            "phone": "0467159740",
+            "description": "",
+            "naf": "Edition de logiciels applicatifs",
+            "opco": "ATLAS",
+            "size": "100-199",
+            "website": "",
+            "siret": "35044680300115"
         },
         {
             "source": "candidature_spontanee",
@@ -1334,20 +1348,6 @@
         {
             "source": "candidature_spontanee",
             "title": "",
-            "company": "DIAPPYMED",
-            "location": "3 avenue de l Europe 34830 CLAPIERS",
-            "url": "https://labonnealternance.apprentissage.beta.gouv.fr/emploi/recruteurs_lba/89311440500028/diappymed",
-            "phone": "",
-            "description": "",
-            "naf": "Edition de logiciels applicatifs",
-            "opco": "ATLAS",
-            "size": "0-0",
-            "website": "",
-            "siret": "89311440500028"
-        },
-        {
-            "source": "candidature_spontanee",
-            "title": "",
             "company": "ROSELLA BIOSYSTEM",
             "location": "3 AVENUE DE LEUROPE 34830 CLAPIERS",
             "url": "https://labonnealternance.apprentissage.beta.gouv.fr/emploi/recruteurs_lba/90329322300017/rosella-biosystem",
@@ -1358,6 +1358,20 @@
             "size": "3-5",
             "website": "",
             "siret": "90329322300017"
+        },
+        {
+            "source": "candidature_spontanee",
+            "title": "",
+            "company": "DIAPPYMED",
+            "location": "3 avenue de l Europe 34830 CLAPIERS",
+            "url": "https://labonnealternance.apprentissage.beta.gouv.fr/emploi/recruteurs_lba/89311440500028/diappymed",
+            "phone": "",
+            "description": "",
+            "naf": "Edition de logiciels applicatifs",
+            "opco": "ATLAS",
+            "size": "0-0",
+            "website": "",
+            "siret": "89311440500028"
         },
         {
             "source": "candidature_spontanee",
@@ -1390,20 +1404,6 @@
         {
             "source": "candidature_spontanee",
             "title": "",
-            "company": "INTERSYSTEMS SAS",
-            "location": "2656 avenue Georges Freche 34470 PEROLS",
-            "url": "https://labonnealternance.apprentissage.beta.gouv.fr/emploi/recruteurs_lba/30981372300439/intersystems-sas",
-            "phone": "0434173000",
-            "description": "",
-            "naf": "Conseil en systèmes et logiciels informatiques",
-            "opco": "ATLAS",
-            "size": "20-49",
-            "website": "",
-            "siret": "30981372300439"
-        },
-        {
-            "source": "candidature_spontanee",
-            "title": "",
             "company": "BEEMO TECHNOLOGIE",
             "location": "2656 AVENUE GEORGES FRECHE 34470 PEROLS",
             "url": "https://labonnealternance.apprentissage.beta.gouv.fr/emploi/recruteurs_lba/44406370500073/beemo-technologie",
@@ -1414,6 +1414,20 @@
             "size": "20-49",
             "website": "",
             "siret": "44406370500073"
+        },
+        {
+            "source": "candidature_spontanee",
+            "title": "",
+            "company": "INTERSYSTEMS SAS",
+            "location": "2656 avenue Georges Freche 34470 PEROLS",
+            "url": "https://labonnealternance.apprentissage.beta.gouv.fr/emploi/recruteurs_lba/30981372300439/intersystems-sas",
+            "phone": "0434173000",
+            "description": "",
+            "naf": "Conseil en systèmes et logiciels informatiques",
+            "opco": "ATLAS",
+            "size": "20-49",
+            "website": "",
+            "siret": "30981372300439"
         },
         {
             "source": "candidature_spontanee",
@@ -1544,6 +1558,20 @@
         {
             "source": "candidature_spontanee",
             "title": "",
+            "company": "STIM",
+            "location": "329 rue de la Garriguette 34130 SAINT-AUNES",
+            "url": "https://labonnealternance.apprentissage.beta.gouv.fr/emploi/recruteurs_lba/33766816400060/stim",
+            "phone": "0467871146",
+            "description": "",
+            "naf": "Fabrication de produits électroniques grand public",
+            "opco": "OPCO 2i",
+            "size": "20-49",
+            "website": "",
+            "siret": "33766816400060"
+        },
+        {
+            "source": "candidature_spontanee",
+            "title": "",
             "company": "CARFOOLY",
             "location": "65 RUE DE LA GARRIGUETTE 34130 SAINT-AUNES",
             "url": "https://labonnealternance.apprentissage.beta.gouv.fr/emploi/recruteurs_lba/90161486700025/carfooly",
@@ -1610,6 +1638,20 @@
             "size": "10-19",
             "website": "",
             "siret": "79452043700011"
+        },
+        {
+            "source": "candidature_spontanee",
+            "title": "",
+            "company": "EARSONICS",
+            "location": "171 avenue DES GARDIANS 34160 CASTRIES",
+            "url": "https://labonnealternance.apprentissage.beta.gouv.fr/emploi/recruteurs_lba/50111569500022/earsonics",
+            "phone": "0467593620",
+            "description": "",
+            "naf": "Fabrication de produits électroniques grand public",
+            "opco": "OPCO 2i",
+            "size": "20-49",
+            "website": "",
+            "siret": "50111569500022"
         },
         {
             "source": "candidature_spontanee",
@@ -1698,20 +1740,6 @@
         {
             "source": "candidature_spontanee",
             "title": "",
-            "company": "ODIGO",
-            "location": "AVENUE DU GOLF 34670 BAILLARGUES",
-            "url": "https://labonnealternance.apprentissage.beta.gouv.fr/emploi/recruteurs_lba/52903897800068/odigo",
-            "phone": "0467161730",
-            "description": "",
-            "naf": "Traitement de données, hébergement et activités connexes",
-            "opco": "ATLAS",
-            "size": "0-0",
-            "website": "",
-            "siret": "52903897800068"
-        },
-        {
-            "source": "candidature_spontanee",
-            "title": "",
             "company": "GLOBAL SOFT",
             "location": "avenue du Golf 34670 BAILLARGUES",
             "url": "https://labonnealternance.apprentissage.beta.gouv.fr/emploi/recruteurs_lba/45190295100032/global-soft",
@@ -1722,6 +1750,20 @@
             "size": "20-49",
             "website": "",
             "siret": "45190295100032"
+        },
+        {
+            "source": "candidature_spontanee",
+            "title": "",
+            "company": "ODIGO",
+            "location": "AVENUE DU GOLF 34670 BAILLARGUES",
+            "url": "https://labonnealternance.apprentissage.beta.gouv.fr/emploi/recruteurs_lba/52903897800068/odigo",
+            "phone": "0467161730",
+            "description": "",
+            "naf": "Traitement de données, hébergement et activités connexes",
+            "opco": "ATLAS",
+            "size": "0-0",
+            "website": "",
+            "siret": "52903897800068"
         },
         {
             "source": "candidature_spontanee",
@@ -2118,48 +2160,6 @@
         {
             "source": "candidature_spontanee",
             "title": "",
-            "company": "APPLE STORE",
-            "location": "34000 Montpellier",
-            "url": "https://labonnealternance.apprentissage.beta.gouv.fr/emploi/recruteurs_lba/48320938300031/apple-store",
-            "phone": "",
-            "description": "",
-            "naf": "Commerce de détail d'ordinateurs, d'unités périphériques et de logiciels en magasin spécialisé",
-            "opco": "L'Opcommerce",
-            "size": "50-99",
-            "website": "",
-            "siret": "48320938300031"
-        },
-        {
-            "source": "candidature_spontanee",
-            "title": "",
-            "company": "EVOLUTION RESEAU TELECOM",
-            "location": "33 AVENUE DE LA GALINE 34170 CASTELNAU-LE-LEZ",
-            "url": "https://labonnealternance.apprentissage.beta.gouv.fr/emploi/recruteurs_lba/89407348500019/evolution-reseau-telecom",
-            "phone": "",
-            "description": "",
-            "naf": "Commerce de détail d'ordinateurs, d'unités périphériques et de logiciels en magasin spécialisé",
-            "opco": "L'Opcommerce",
-            "size": "3-5",
-            "website": "",
-            "siret": "89407348500019"
-        },
-        {
-            "source": "candidature_spontanee",
-            "title": "",
-            "company": "DIGITAL STORE CONCEPT",
-            "location": "1115 rue Helene Boucher 34130 MAUGUIO",
-            "url": "https://labonnealternance.apprentissage.beta.gouv.fr/emploi/recruteurs_lba/88448286000027/digital-store-concept",
-            "phone": "",
-            "description": "",
-            "naf": "Commerce de détail d'ordinateurs, d'unités périphériques et de logiciels en magasin spécialisé",
-            "opco": "L'Opcommerce",
-            "size": "0-0",
-            "website": "",
-            "siret": "88448286000027"
-        },
-        {
-            "source": "candidature_spontanee",
-            "title": "",
             "company": "MICRO DIRECT",
             "location": "34470 Pérols",
             "url": "https://labonnealternance.apprentissage.beta.gouv.fr/emploi/recruteurs_lba/40230957900033/micro-direct",
@@ -2170,62 +2170,6 @@
             "size": "6-9",
             "website": "",
             "siret": "40230957900033"
-        },
-        {
-            "source": "candidature_spontanee",
-            "title": "",
-            "company": "BIBORNE SUD",
-            "location": "187 RUE TURK ET DE GROOT 34690 FABREGUES",
-            "url": "https://labonnealternance.apprentissage.beta.gouv.fr/emploi/recruteurs_lba/90279790100011/biborne-sud",
-            "phone": "",
-            "description": "",
-            "naf": "Commerce de détail d'ordinateurs, d'unités périphériques et de logiciels en magasin spécialisé",
-            "opco": "L'Opcommerce",
-            "size": "10-19",
-            "website": "",
-            "siret": "90279790100011"
-        },
-        {
-            "source": "candidature_spontanee",
-            "title": "",
-            "company": "SOWILO NETWORK MONTPELLIER",
-            "location": "385 AVENUE DES BARONNES 34730 PRADES-LE-LEZ",
-            "url": "https://labonnealternance.apprentissage.beta.gouv.fr/emploi/recruteurs_lba/81452403900025/sowilo-network-montpellier",
-            "phone": "",
-            "description": "",
-            "naf": "Commerce de détail d'ordinateurs, d'unités périphériques et de logiciels en magasin spécialisé",
-            "opco": "L'Opcommerce",
-            "size": "0-0",
-            "website": "",
-            "siret": "81452403900025"
-        },
-        {
-            "source": "candidature_spontanee",
-            "title": "",
-            "company": "L.M.E SOLUTIONS",
-            "location": "centre Commercial la Couronne 34160 CASTRIES",
-            "url": "https://labonnealternance.apprentissage.beta.gouv.fr/emploi/recruteurs_lba/84883191300035/l-m-e-solutions",
-            "phone": "0499770053",
-            "description": "",
-            "naf": "Commerce de détail d'ordinateurs, d'unités périphériques et de logiciels en magasin spécialisé",
-            "opco": "L'Opcommerce",
-            "size": "0-0",
-            "website": "",
-            "siret": "84883191300035"
-        },
-        {
-            "source": "candidature_spontanee",
-            "title": "",
-            "company": "CENTRE PRO LR",
-            "location": "43 Chemin des Près 34590 Marsillargues",
-            "url": "https://labonnealternance.apprentissage.beta.gouv.fr/emploi/recruteurs_lba/79301142000023/centre-pro-lr",
-            "phone": "",
-            "description": "",
-            "naf": "Commerce de détail d'ordinateurs, d'unités périphériques et de logiciels en magasin spécialisé",
-            "opco": "L'Opcommerce",
-            "size": "0-0",
-            "website": "",
-            "siret": "79301142000023"
         },
         {
             "source": "candidature_spontanee",
@@ -2790,9 +2734,9 @@
         {
             "source": "candidature_spontanee",
             "title": "",
-            "company": "LES CERISIERS",
+            "company": "CLINIQUE VETERINAIRE DES CEVENNES",
             "location": "429 avenue des Cevennes 34980 SAINT-GELY-DU-FESC",
-            "url": "https://labonnealternance.apprentissage.beta.gouv.fr/emploi/recruteurs_lba/45182986500778/les-cerisiers",
+            "url": "https://labonnealternance.apprentissage.beta.gouv.fr/emploi/recruteurs_lba/45182986500778/clinique-veterinaire-des-cevennes",
             "phone": "",
             "description": "",
             "naf": "Activités vétérinaires",
@@ -2986,6 +2930,20 @@
         {
             "source": "candidature_spontanee",
             "title": "",
+            "company": "BELLUM",
+            "location": "7 rue Castel Moton 34000 MONTPELLIER",
+            "url": "https://labonnealternance.apprentissage.beta.gouv.fr/emploi/recruteurs_lba/80823033800036/bellum",
+            "phone": "",
+            "description": "",
+            "naf": "Fabrication d’articles de joaillerie et bijouterie",
+            "opco": "OPCO 2i",
+            "size": "1-2",
+            "website": "",
+            "siret": "80823033800036"
+        },
+        {
+            "source": "candidature_spontanee",
+            "title": "",
             "company": "LAURENT BERNA",
             "location": "31 RUE ROUCHER 34000 MONTPELLIER",
             "url": "https://labonnealternance.apprentissage.beta.gouv.fr/emploi/recruteurs_lba/51852666000049/laurent-berna",
@@ -3168,6 +3126,34 @@
         {
             "source": "candidature_spontanee",
             "title": "",
+            "company": "SOCIETE DE RECYCLAGE D'INVENDUS DE PRESSE",
+            "location": "1025 AVENUE HENRI BECQUEREL 34000 MONTPELLIER",
+            "url": "https://labonnealternance.apprentissage.beta.gouv.fr/emploi/recruteurs_lba/42380980500017/societe-de-recyclage-d-invendus-de-presse",
+            "phone": "0466202642",
+            "description": "",
+            "naf": "Commerce de gros (commerce interentreprises) d'autres biens domestiques ",
+            "opco": "AKTO / Opco entreprises et salariés des services à forte intensité de main d'oeuvre",
+            "size": "1-2",
+            "website": "",
+            "siret": "42380980500017"
+        },
+        {
+            "source": "candidature_spontanee",
+            "title": "",
+            "company": "EUROGIFT",
+            "location": "120 rue de Thor 34000 MONTPELLIER",
+            "url": "https://labonnealternance.apprentissage.beta.gouv.fr/emploi/recruteurs_lba/42085067900051/eurogift",
+            "phone": "0467108186",
+            "description": "",
+            "naf": "Commerce de gros (commerce interentreprises) d'autres biens domestiques ",
+            "opco": "AKTO / Opco entreprises et salariés des services à forte intensité de main d'oeuvre",
+            "size": "3-5",
+            "website": "",
+            "siret": "42085067900051"
+        },
+        {
+            "source": "candidature_spontanee",
+            "title": "",
             "company": "OPPI",
             "location": "199 RUE HELENE BOUCHER 34170 CASTELNAU-LE-LEZ",
             "url": "https://labonnealternance.apprentissage.beta.gouv.fr/emploi/recruteurs_lba/84165237300017/oppi",
@@ -3178,6 +3164,20 @@
             "size": "6-9",
             "website": "",
             "siret": "84165237300017"
+        },
+        {
+            "source": "candidature_spontanee",
+            "title": "",
+            "company": "EDISER",
+            "location": "381 rue Raymond Recouly 34070 MONTPELLIER",
+            "url": "https://labonnealternance.apprentissage.beta.gouv.fr/emploi/recruteurs_lba/43748640000025/ediser",
+            "phone": "0467070033",
+            "description": "",
+            "naf": "Édition de livres",
+            "opco": "AFDAS",
+            "size": "50-99",
+            "website": "",
+            "siret": "43748640000025"
         },
         {
             "source": "candidature_spontanee",
@@ -3252,6 +3252,20 @@
         {
             "source": "candidature_spontanee",
             "title": "",
+            "company": "OVENTI",
+            "location": "63 rue Negue Cat 34130 MAUGUIO",
+            "url": "https://labonnealternance.apprentissage.beta.gouv.fr/emploi/recruteurs_lba/43311605000017/oventi",
+            "phone": "0467420574",
+            "description": "",
+            "naf": "Commerce de gros (commerce interentreprises) d'autres biens domestiques ",
+            "opco": "L'Opcommerce",
+            "size": "6-9",
+            "website": "",
+            "siret": "43311605000017"
+        },
+        {
+            "source": "candidature_spontanee",
+            "title": "",
             "company": "LIGHTMANN",
             "location": "44 rue de Sigalies 34430 SAINT-JEAN-DE-VEDAS",
             "url": "https://labonnealternance.apprentissage.beta.gouv.fr/emploi/recruteurs_lba/84795654700016/lightmann",
@@ -3262,6 +3276,20 @@
             "size": "1-2",
             "website": "",
             "siret": "84795654700016"
+        },
+        {
+            "source": "candidature_spontanee",
+            "title": "",
+            "company": "F.ONE",
+            "location": "170 route de la Foire 34470 PEROLS",
+            "url": "https://labonnealternance.apprentissage.beta.gouv.fr/emploi/recruteurs_lba/38072668700037/f-one",
+            "phone": "0467995116",
+            "description": "",
+            "naf": "Commerce de gros (commerce interentreprises) d'autres biens domestiques ",
+            "opco": "L'Opcommerce",
+            "size": "20-49",
+            "website": "",
+            "siret": "38072668700037"
         },
         {
             "source": "candidature_spontanee",
@@ -3280,6 +3308,20 @@
         {
             "source": "candidature_spontanee",
             "title": "",
+            "company": "LES EDITIONS D'AVALLON",
+            "location": "342 rue du Boulidou 34980 SAINT-CLEMENT-DE-RIVIERE",
+            "url": "https://labonnealternance.apprentissage.beta.gouv.fr/emploi/recruteurs_lba/88271965100011/les-editions-d-avallon",
+            "phone": "",
+            "description": "",
+            "naf": "Édition de livres",
+            "opco": "AFDAS",
+            "size": "1-2",
+            "website": "",
+            "siret": "88271965100011"
+        },
+        {
+            "source": "candidature_spontanee",
+            "title": "",
             "company": "OCCI S.O.",
             "location": "18 avenue du Clapas 34980 SAINT-GELY-DU-FESC",
             "url": "https://labonnealternance.apprentissage.beta.gouv.fr/emploi/recruteurs_lba/88296012300025/occi-s-o",
@@ -3290,6 +3332,20 @@
             "size": "1-2",
             "website": "",
             "siret": "88296012300025"
+        },
+        {
+            "source": "candidature_spontanee",
+            "title": "",
+            "company": "GREENKUB",
+            "location": "300 avenue de la Royale 34160 CASTRIES",
+            "url": "https://labonnealternance.apprentissage.beta.gouv.fr/emploi/recruteurs_lba/79880237700050/greenkub",
+            "phone": "",
+            "description": "",
+            "naf": "Commerce de gros (commerce interentreprises) d'autres biens domestiques ",
+            "opco": "AKTO / Opco entreprises et salariés des services à forte intensité de main d'oeuvre",
+            "size": "10-19",
+            "website": "",
+            "siret": "79880237700050"
         },
         {
             "source": "candidature_spontanee",
@@ -3388,6 +3444,20 @@
             "size": "6-9",
             "website": "",
             "siret": "79875419800017"
+        },
+        {
+            "source": "candidature_spontanee",
+            "title": "",
+            "company": "JOAILLERIE CAMARGUAISE",
+            "location": "1 GRAND'RUE 30670 AIGUES-VIVES",
+            "url": "https://labonnealternance.apprentissage.beta.gouv.fr/emploi/recruteurs_lba/48508933800027/joaillerie-camarguaise",
+            "phone": "",
+            "description": "",
+            "naf": "Fabrication d’articles de joaillerie et bijouterie",
+            "opco": "OPCO 2i",
+            "size": "1-2",
+            "website": "",
+            "siret": "48508933800027"
         }
     ]
 }
