@@ -1,0 +1,88 @@
+# SADD Plugin (Subagent-Driven Development)
+
+Execution framework that dispatches fresh subagents for each task with quality gates between iterations, enabling fast parallel development while maintaining code quality.
+
+Focused on:
+
+- **Fresh context per task** - Each subagent starts clean without context pollution from previous tasks
+- **Quality gates** - Code review between tasks catches issues early before they compound
+- **Parallel execution** - Independent tasks run concurrently for faster completion
+- **Sequential execution** - Dependent tasks execute in order with review checkpoints
+
+## Plugin Target
+
+- Prevent context pollution - Fresh subagents avoid accumulated confusion from long sessions
+- Catch issues early - Code review between tasks prevents bugs from compounding
+- Faster iteration - Parallel execution of independent tasks saves time
+- Maintain quality at scale - Quality gates ensure standards are met on every task
+
+## Overview
+
+The SADD plugin provides skills and commands for executing work through coordinated subagents. Instead of executing all tasks in a single long session where context accumulates and quality degrades, SADD dispatches fresh subagents with quality gates.
+
+**Core capabilities:**
+
+- **Sequential/Parallel Execution** - Execute implementation plans task-by-task with code review gates
+- **Competitive Execution** - Generate multiple solutions, evaluate with judges, synthesize best elements
+- **Work Evaluation** - Assess completed work using LLM-as-Judge with structured rubrics
+
+This approach solves the "context pollution" problem - when an agent accumulates confusion, outdated assumptions, or implementation drift over long sessions. Each fresh subagent starts clean, implements its specific scope, and reports back for quality validation.
+
+The plugin supports multiple execution strategies based on task characteristics, all with built-in quality gates.
+
+## Quick Start
+
+```bash
+# Install the plugin
+/plugin install sadd@NeoLabHQ/context-engineering-kit
+
+# Use competitive execution for high-stakes tasks
+/do-competitively "Design and implement authentication middleware with JWT support"
+
+```
+
+[Usage Examples](./usage-examples.md)
+
+## Commands Overview
+
+- [launch-sub-agent](./launch-sub-agent.md) - This command launches a focused sub-agent to execute the provided task. Analyze the task to intelligently select the optimal model and agent configuration, then dispatch a sub-agent with Zero-shot Chain-of-Thought reasoning at the beginning and mandatory self-critique verification at the end.
+- [/do-and-judge](./do-and-judge.md) - Execute a single task with implementation sub-agent, independent judge verification, and automatic retry loop until passing or max retries exceeded.
+- [/do-in-parallel](./do-in-parallel.md) - Execute tasks in parallel across multiple targets with intelligent model selection, independence validation, and quality-focused prompting
+- [/do-in-steps](./do-in-steps.md) - Execute complex tasks through sequential sub-agent orchestration with intelligent model selection and LLM-as-a-judge verification.
+- [/do-competitively](./do-competitively.md) - Execute tasks through competitive generation, multi-judge evaluation, and evidence-based synthesis to produce superior results.
+- [/tree-of-thoughts](./tree-of-thoughts.md) - Execute complex reasoning tasks through systematic exploration of solution space, pruning unpromising branches, expanding viable approaches, and synthesizing the best solution.
+- [/judge-with-debate](./judge-with-debate.md) - Evaluate solutions through iterative multi-judge debate where independent judges analyze, challenge each other's assessments, and refine evaluations until reaching consensus or maximum rounds.
+- [/judge](./judge.md) - Evaluate completed work using LLM-as-Judge with structured rubrics, context isolation, and evidence-based scoring.
+
+## Skills Overview
+
+- [subagent-driven-development](./subagent-driven-development.md) - Task Execution with Quality Gates. Allow it to dispatch fresh subagent for each task with code review between tasks.
+- [multi-agent-patterns](./multi-agent-patterns.md) - Multi-Agent Architecture Patterns. Provide guidence for parallel, sequential and debate execution strategies.
+
+## Foundation
+
+The SADD plugin is based on the following foundations:
+
+### Agent Skills for Context Engineering
+
+- [Agent Skills for Context Engineering project](https://github.com/muratcankoylan/Agent-Skills-for-Context-Engineering) by Murat Can Koylan
+
+### Research Papers
+
+**Multi-Agent Patterns:**
+
+- [Multi-Agent Debate](https://arxiv.org/abs/2305.14325) - Du, Y., et al. (2023)
+- [Self-Consistency](https://arxiv.org/abs/2203.11171) - Wang, X., et al. (2022)
+- [Tree of Thoughts](https://arxiv.org/abs/2305.10601) - Yao, S., et al. (2023)
+
+**Evaluation and Critique:**
+
+- [Constitutional AI](https://arxiv.org/abs/2212.08073) - Bai, Y., et al. (2022). Self-critique loops
+- [LLM-as-a-Judge](https://arxiv.org/abs/2306.05685) - Zheng, L., et al. (2023). Structured evaluation
+- [Chain-of-Verification](https://arxiv.org/abs/2309.11495) - Dhuliawala, S., et al. (2023). Verification loops
+
+### Engineering Methodologies
+
+- **Design Studio Method** - Parallel design exploration with critique and synthesis
+- **Spike Solutions** (Extreme Programming) - Time-boxed exploration of multiple approaches
+- **Ensemble Methods** (Machine Learning) - Combining multiple models for improved performance
