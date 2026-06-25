@@ -1,0 +1,36 @@
+{
+  "capgemini": {
+    "company_name": "Capgemini SE",
+    "website": "https://www.capgemini.com",
+    "careers_url": "https://www.capgemini.com/careers/",
+    "contact_form_url": "https://www.capgemini.com/contact-us/",
+    "hr_email": null,
+    "hr_phone": "+33 1 47 54 50 00",
+    "linkedin_url": "https://www.linkedin.com/company/capgemini/",
+    "headquarters": "Paris, France",
+    "sector": "Services de conseil, technologies et transformation numérique",
+    "description": "Capgemini SE est une multinationale française de services et de conseil en technologies de l'information (TI) dont le siège est à Paris, en France. L'entreprise aide les organisations à transformer et à gérer leurs activités en tirant parti de la puissance de la technologie.",
+    "contact_tips": [
+      "Pour relancer une candidature, il est recommandé de consulter la page carrières globale de Capgemini et les pages spécifiques par pays pour des informations localisées.",
+      "Utilisez le formulaire de contact général de Capgemini en sélectionnant 'Career' comme objet de votre demande pour toute question relative à votre candidature."
+    ],
+    "confidence": "high"
+  },
+  "capgemini se": {
+    "company_name": "Capgemini SE",
+    "website": "https://www.capgemini.com",
+    "careers_url": "https://www.capgemini.com/careers/",
+    "contact_form_url": "https://www.capgemini.com/contact-us/",
+    "hr_email": null,
+    "hr_phone": "+33 1 47 54 50 00",
+    "linkedin_url": "https://www.linkedin.com/company/capgemini/",
+    "headquarters": "Paris, France",
+    "sector": "Services de conseil, technologies et transformation numérique",
+    "description": "Capgemini SE est une multinationale française de services et de conseil en technologies de l'information (TI) dont le siège est à Paris, en France. L'entreprise aide les organisations à transformer et à gérer leurs activités en tirant parti de la puissance de la technologie.",
+    "contact_tips": [
+      "Pour relancer une candidature, il est recommandé de consulter la page carrières globale de Capgemini et les pages spécifiques par pays pour des informations localisées.",
+      "Utilisez le formulaire de contact général de Capgemini en sélectionnant 'Career' comme objet de votre demande pour toute question relative à votre candidature."
+    ],
+    "confidence": "high"
+  }
+}

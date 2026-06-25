@@ -3,12 +3,18 @@ import json
 import time
 import sys
 import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 LAT    = 43.610476  
 LON    = 3.87048
 RADIUS = 30         
 
-API_TOKEN = "eyJhbGciOiJIUzI1NiJ9.eyJfaWQiOiI2YTA3MTc4YWQzNWYyMjY3MDdjZTVkMjYiLCJhcGlfa2V5IjoieXpSTi9sOGhqMy9JOUd3ZC9LUWpLWWlhd29kK1NucDNuczE0R2QvbUdIST0iLCJvcmdhbmlzYXRpb24iOm51bGwsImVtYWlsIjoidXJiYW4ubWF0aHlzQG91dGxvb2suY29tIiwiaXNzIjoiYXBpIiwiaWF0IjoxNzc4ODUxMDgyLCJleHAiOjE4MTAzODcwODJ9.iugq8pNHI_SQy6WO3_SyWkp1asz-7rkVT72B5DZFICo"
+API_TOKEN = os.getenv("LBA_API_TOKEN")
+
+if not API_TOKEN:
+    raise ValueError("LBA_API_TOKEN manquant (.env ou variable système)")
 
 CODES_ROME = [
     "M1805",  

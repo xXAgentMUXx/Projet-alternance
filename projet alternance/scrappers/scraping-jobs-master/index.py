@@ -52,6 +52,12 @@ if len(dict_tmp) > 0:
     arr_jobs += dict_tmp
 
 
+## monster.fr
+#sjmonster = scraping_jobs_monster(s_job, type_contract)
+#sjmonster.set_city(city)
+#dict_tmp = sjmonster.scrap_job()
+#if len(dict_tmp) > 0:
+    #arr_jobs += dict_tmp
 
 ### 
 

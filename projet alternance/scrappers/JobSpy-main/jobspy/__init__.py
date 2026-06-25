@@ -212,6 +212,7 @@ def scrape_jobs(
 
         # Reorder the DataFrame according to the desired order
         jobs_df = jobs_df[desired_order]
+        jobs_df = jobs_df.where(pd.notnull(jobs_df), None)
 
         # Step 4: Sort the DataFrame as required
         return jobs_df.sort_values(

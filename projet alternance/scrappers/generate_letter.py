@@ -5,8 +5,14 @@ import sys
 import json
 import os
 import re
+from dotenv import load_dotenv
 
-GEMINI_API_KEY = "AIzaSyCaoabwu703HwQ8RbprLW347-Xe5m9qlCw"
+load_dotenv()
+
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
+
+if not GEMINI_API_KEY:
+    raise ValueError("GEMINI_API_KEY manquante (env ou .env)")
 
 genai.configure(api_key=GEMINI_API_KEY)
 

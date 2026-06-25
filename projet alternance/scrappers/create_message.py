@@ -3,10 +3,17 @@ import json
 import sys
 import re
 from google import genai
+from dotenv import load_dotenv
+import os
 
-client = genai.Client(
-    api_key="AIzaSyCaoabwu703HwQ8RbprLW347-Xe5m9qlCw"
-)
+load_dotenv()
+
+API_KEY = os.getenv("GEMINI_API_KEY")
+
+if not API_KEY:
+    raise ValueError("GEMINI_API_KEY manquante (.env ou variable système)")
+
+client = genai.Client(api_key=API_KEY)
 
 def extract_job_title(job_description: str):
 

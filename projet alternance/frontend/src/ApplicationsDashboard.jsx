@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 export default function ApplicationsDashboard({
@@ -6,6 +6,13 @@ export default function ApplicationsDashboard({
   setApplications
 }) {
   const navigate = useNavigate();
+
+  const [manualApplication, setManualApplication] = useState({
+    title: "",
+    company: "",
+    description: "",
+    url: ""
+  });
 
   const addBusinessDays = (date, days) => {
     let result = new Date(date);
@@ -23,6 +30,44 @@ export default function ApplicationsDashboard({
 
     return result;
   };
+
+  const addManualApplication = () => {
+    if (
+      !manualApplication.title.trim() ||
+      !manualApplication.company.trim()
+    ) {
+      alert("Titre et entreprise obligatoires");
+      return;
+    }
+
+    const newApplication = {
+      id: Date.now(),
+      title: manualApplication.title,
+      company: manualApplication.company,
+      description: manualApplication.description,
+      url: manualApplication.url,
+      appliedDate: new Date().toISOString(),
+      followUpDate: addBusinessDays(
+        new Date(),
+        10
+      ).toISOString(),
+      reminderActive: true,
+      status: "En cours"
+    };
+
+    setApplications((prev) => [
+      newApplication,
+      ...prev
+    ]);
+
+    setManualApplication({
+      title: "",
+      company: "",
+      description: "",
+      url: ""
+    });
+  };
+
   const resetReminder = (id) => {
     setApplications((prev) =>
       prev.map((app) =>
@@ -51,8 +96,7 @@ export default function ApplicationsDashboard({
               ...app,
               status: newStatus,
               reminderActive:
-                newStatus ===
-                "En cours"
+                newStatus === "En cours"
             }
           : app
       )
@@ -60,19 +104,24 @@ export default function ApplicationsDashboard({
   };
 
   const deleteApplication = (id) => {
-    if (!window.confirm("Supprimer cette candidature ?")) {
+    if (
+      !window.confirm(
+        "Supprimer cette candidature ?"
+      )
+    ) {
       return;
     }
-    setApplications((prev) => prev.filter((app) => app.id !== id));
+
+    setApplications((prev) =>
+      prev.filter((app) => app.id !== id)
+    );
   };
 
   const statusColor = {
     "En cours":
       "bg-yellow-100 text-yellow-700",
-
     "Accepté":
       "bg-green-100 text-green-700",
-
     "Refusé":
       "bg-red-100 text-red-700"
   };
@@ -87,9 +136,79 @@ export default function ApplicationsDashboard({
         >
           ← Retour
         </button>
+
         <h1 className="text-4xl font-bold text-center">
           Dashboard des Candidatures
         </h1>
+      </div>
+
+      <div className="max-w-5xl mx-auto bg-white rounded-2xl shadow p-6 mb-8">
+        <h2 className="text-2xl font-bold mb-4">
+          Ajouter une candidature manuelle
+        </h2>
+
+        <div className="grid gap-4">
+
+          <input
+            type="text"
+            placeholder="Titre du poste"
+            value={manualApplication.title}
+            onChange={(e) =>
+              setManualApplication({
+                ...manualApplication,
+                title: e.target.value
+              })
+            }
+            className="border rounded-xl p-3"
+          />
+
+          <input
+            type="text"
+            placeholder="Entreprise"
+            value={manualApplication.company}
+            onChange={(e) =>
+              setManualApplication({
+                ...manualApplication,
+                company: e.target.value
+              })
+            }
+            className="border rounded-xl p-3"
+          />
+
+          <textarea
+            placeholder="Description"
+            rows={4}
+            value={manualApplication.description}
+            onChange={(e) =>
+              setManualApplication({
+                ...manualApplication,
+                description: e.target.value
+              })
+            }
+            className="border rounded-xl p-3"
+          />
+
+          <input
+            type="url"
+            placeholder="URL de l'offre"
+            value={manualApplication.url}
+            onChange={(e) =>
+              setManualApplication({
+                ...manualApplication,
+                url: e.target.value
+              })
+            }
+            className="border rounded-xl p-3"
+          />
+
+          <button
+            onClick={addManualApplication}
+            className="bg-green-600 text-white px-4 py-3 rounded-xl hover:bg-green-700"
+          >
+            Ajouter la candidature
+          </button>
+
+        </div>
       </div>
 
       {applications.length === 0 ? (
@@ -112,10 +231,7 @@ export default function ApplicationsDashboard({
                     app.followUpDate
                   ) - new Date()
                 ) /
-                  (1000 *
-                    60 *
-                    60 *
-                    24)
+                  (1000 * 60 * 60 * 24)
               );
             }
 
@@ -124,13 +240,16 @@ export default function ApplicationsDashboard({
                 key={app.id}
                 className="bg-white rounded-2xl shadow p-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4 relative"
               >
+
                 <button
-                  onClick={() => deleteApplication(app.id)}
+                  onClick={() =>
+                    deleteApplication(app.id)
+                  }
                   className="absolute right-4 top-4 text-gray-400 hover:text-red-600 rounded-full p-2"
-                  aria-label="Supprimer candidature"
                 >
                   ×
                 </button>
+
                 <div>
                   <h2 className="text-2xl font-bold">
                     {app.title}
@@ -140,7 +259,24 @@ export default function ApplicationsDashboard({
                     {app.company}
                   </p>
 
-                  <p className="text-sm text-gray-500">
+                  {app.description && (
+                    <p className="text-sm text-gray-600 mt-2">
+                      {app.description}
+                    </p>
+                  )}
+
+                  {app.url && (
+                    <a
+                      href={app.url}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="text-blue-600 text-sm hover:underline"
+                    >
+                      Voir l'offre
+                    </a>
+                  )}
+
+                  <p className="text-sm text-gray-500 mt-2">
                     Postulé le :{" "}
                     {new Date(
                       app.appliedDate
@@ -149,11 +285,8 @@ export default function ApplicationsDashboard({
 
                   {app.reminderActive && (
                     <p className="mt-2 text-blue-600 font-semibold">
-                      Relance dans :{" "}
-                      {daysLeft} jour
-                      {daysLeft > 1
-                        ? "s"
-                        : ""}
+                      Relance dans : {daysLeft} jour
+                      {daysLeft > 1 ? "s" : ""}
                     </p>
                   )}
                 </div>
@@ -176,15 +309,9 @@ export default function ApplicationsDashboard({
                     }
                     className="border rounded-xl p-2"
                   >
-                    <option>
-                      En cours
-                    </option>
-                    <option>
-                      Accepté
-                    </option>
-                    <option>
-                      Refusé
-                    </option>
+                    <option>En cours</option>
+                    <option>Accepté</option>
+                    <option>Refusé</option>
                   </select>
 
                   {app.status ===
@@ -215,6 +342,7 @@ export default function ApplicationsDashboard({
                   )}
 
                 </div>
+
               </div>
             );
           })}

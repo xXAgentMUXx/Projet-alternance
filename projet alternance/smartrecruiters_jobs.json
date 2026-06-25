@@ -1,0 +1,67 @@
+[
+  {
+    "title": "Sr. Manager",
+    "company": "Visa",
+    "location": "Austin, TX, us",
+    "url": "https://api.smartrecruiters.com/v1/companies/Visa/postings/744000133907678",
+    "description": "",
+    "source": "SmartRecruiters",
+    "type": "offre",
+    "contract": [],
+    "remote": "",
+    "created_at": "2026-06-24T10:00:11.853Z",
+    "is_new": false
+  },
+  {
+    "title": "Director",
+    "company": "Visa",
+    "location": "Bengaluru, KA, in",
+    "url": "https://api.smartrecruiters.com/v1/companies/Visa/postings/744000129971988",
+    "description": "",
+    "source": "SmartRecruiters",
+    "type": "offre",
+    "contract": [],
+    "remote": "",
+    "created_at": "2026-06-03T11:08:12.368Z",
+    "is_new": false
+  },
+  {
+    "title": "Sr. SW Engineer",
+    "company": "Visa",
+    "location": "Austin, TX, us",
+    "url": "https://api.smartrecruiters.com/v1/companies/Visa/postings/744000122509268",
+    "description": "",
+    "source": "SmartRecruiters",
+    "type": "offre",
+    "contract": [],
+    "remote": "",
+    "created_at": "2026-04-23T16:54:54.835Z",
+    "is_new": false
+  },
+  {
+    "title": "Staff SW Engineer",
+    "company": "Visa",
+    "location": "Bellevue, WA, us",
+    "url": "https://api.smartrecruiters.com/v1/companies/Visa/postings/744000122273376",
+    "description": "",
+    "source": "SmartRecruiters",
+    "type": "offre",
+    "contract": [],
+    "remote": "",
+    "created_at": "2026-04-22T14:20:21.874Z",
+    "is_new": false
+  },
+  {
+    "title": "Staff SW Engineer",
+    "company": "Visa",
+    "location": "Highlands Ranch, CO, us",
+    "url": "https://api.smartrecruiters.com/v1/companies/Visa/postings/744000114660616",
+    "description": "",
+    "source": "SmartRecruiters",
+    "type": "offre",
+    "contract": [],
+    "remote": "",
+    "created_at": "2026-03-13T13:27:33.235Z",
+    "is_new": false
+  }
+]

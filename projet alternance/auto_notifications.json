@@ -1,35 +1,62 @@
 {
-  "timestamp": "2026-06-08T11:16:38.324888+00:00",
+  "timestamp": "2026-06-24T19:55:50.181525+00:00",
   "source_results": {
-    "linkedin": {
-      "total_jobs": 7,
-      "new_jobs": 0
-    },
     "indeed": {
-      "total_jobs": 5,
-      "new_jobs": 0
+      "total_jobs": 12,
+      "new_jobs": 0,
+      "jobs": []
     },
     "meteojob": {
-      "total_jobs": 3,
-      "new_jobs": 0
+      "total_jobs": 1,
+      "new_jobs": 0,
+      "jobs": []
     },
-    "bonne_alternance": {
-      "total_jobs": 244,
-      "new_jobs": 0
+    "linkedin": {
+      "total_jobs": 27,
+      "new_jobs": 0,
+      "jobs": []
     },
     "apec": {
+      "total_jobs": 1,
+      "new_jobs": 0,
+      "jobs": []
+    },
+    "wttj": {
+      "total_jobs": 5,
+      "new_jobs": 0,
+      "jobs": []
+    },
+    "smartrecruiters": {
+      "total_jobs": 5,
+      "new_jobs": 0,
+      "jobs": []
+    },
+    "bonne_alternance": {
+      "total_jobs": 232,
+      "new_jobs": 0,
+      "jobs": []
+    },
+    "greenhouse": {
       "total_jobs": 0,
-      "new_jobs": 0
+      "new_jobs": 0,
+      "jobs": []
+    },
+    "lever": {
+      "total_jobs": 0,
+      "new_jobs": 0,
+      "jobs": []
     },
     "hellowork": {
       "total_jobs": 39,
-      "new_jobs": 2
+      "new_jobs": 0,
+      "jobs": []
     },
     "francetravail": {
       "total_jobs": 101,
-      "new_jobs": 3
+      "new_jobs": 0,
+      "jobs": []
     }
   },
-  "total_jobs": 399,
-  "total_new_jobs": 5
+  "total_jobs": 423,
+  "total_new_jobs": 0
 }
