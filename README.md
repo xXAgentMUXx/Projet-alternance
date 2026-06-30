@@ -21,6 +21,11 @@ Avant de lancer le projet, installer :
 - npm
 - Git
 
+Ou simplement :
+
+- Docker
+- Docker Compose
+
 ---
 
 # Installation
@@ -63,28 +68,46 @@ npm install
 
 # Configuration
 
-Créer un fichier `.env` dans le backend contenant les variables nécessaires.
+Depuis les dernières versions, **les clés API ne sont plus configurées dans le fichier `.env`.**
 
-Exemple :
+Elles sont enregistrées dans le fichier :
 
-```env
-GEMINI_API_KEY=
-LABONNEALTERNANCE_API_KEY=
+```
+api_keys.json
 ```
 
-Adapter les valeurs suivant votre environnement.
+et peuvent être modifiées directement depuis :
+
+```
+Site accueil -> Paramétres
+```
+
+Il suffit de renseigner :
+
+- Gemini API Key
+- La Bonne Alternance API Key
+
+Aucun redémarrage du serveur n'est nécessaire.
+
+Le fichier `.env` devient donc optionnel et peut rester vide.
+
+## Session LinkedIn
+
+La recherche de contacts au sein d'une entreprise nécessite également une session LinkedIn valide.
+
+Depuis la page :
+
+```
+Site accueil -> Paramétres
+```
+
+Suivez les étapes indiquées pour exporter votre session LinkedIn, puis importez le fichier directement dans l'application. Une fois la session enregistrée, les fonctionnalités de recherche de profils LinkedIn seront disponibles.
 
 ---
 
 # Lancer le Backend
 
 Depuis le dossier **projet-alternance** :
-
-```bash
-py -m uvicorn app:app --reload --port 8000
-```
-
-ou suivant votre structure :
 
 ```bash
 py -m uvicorn main:app --reload --port 8000
@@ -110,6 +133,48 @@ Le frontend sera disponible sur :
 
 ```
 http://localhost:5173
+```
+
+---
+
+# Utilisation avec Docker
+
+## Construire l'image
+
+```bash
+docker compose build
+```
+
+## Lancer les conteneurs
+
+```bash
+docker compose up -d
+```
+
+Ou directement :
+
+```bash
+docker-compose up -d
+```
+
+L'application sera accessible sur :
+
+Frontend
+
+```
+http://localhost:5173
+```
+
+Backend
+
+```
+http://localhost:8000
+```
+
+Pour arrêter :
+
+```bash
+docker compose down
 ```
 
 ---
@@ -217,4 +282,3 @@ npm run dev
 Mathys Urban
 
 Projet Personnel et éducatif – Recherche d'alternance automatisée.
-cepela9839@fixscal.com
