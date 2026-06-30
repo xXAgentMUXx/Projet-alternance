@@ -6,9 +6,13 @@ from google import genai
 from dotenv import load_dotenv
 import os
 
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+
+from main import get_api_key
+
 load_dotenv()
 
-API_KEY = os.getenv("GEMINI_API_KEY")
+API_KEY = get_api_key("GEMINI_API_KEY")
 
 if not API_KEY:
     raise ValueError("GEMINI_API_KEY manquante (.env ou variable système)")

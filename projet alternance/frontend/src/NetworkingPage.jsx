@@ -2,6 +2,7 @@ import React from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
 const STORAGE_KEY = "addedPeople";
+const API_BASE = "http://localhost:8000";
 
 const loadAddedPeople = () => {
   try {
@@ -293,6 +294,16 @@ export default function NetworkingPage({ applications }) {
 
   const [addedPeople, setAddedPeople] = React.useState(() => loadAddedPeople());
 
+  // Statut des clés API
+  const [apiKeysStatus, setApiKeysStatus] = React.useState({ gemini_set: false, lba_set: false });
+
+  React.useEffect(() => {
+    fetch(`${API_BASE}/api-keys-config`)
+      .then((r) => r.json())
+      .then((d) => { if (d) setApiKeysStatus(d); })
+      .catch(() => {});
+  }, []);
+
   React.useEffect(() => {
     if (!applications?.length || !id) return;
     const app = applications.find((a) => String(a.id) === String(id));
@@ -339,7 +350,7 @@ export default function NetworkingPage({ applications }) {
     if (!company.trim()) { alert("Entreprise manquante."); return; }
     setLoading(true);
     try {
-      const res  = await fetch("http://localhost:8000/search-company-contacts", {
+      const res  = await fetch(`${API_BASE}/search-company-contacts`, {
         method:  "POST",
         headers: { "Content-Type": "application/json" },
         body:    JSON.stringify({
@@ -366,12 +377,16 @@ export default function NetworkingPage({ applications }) {
 
 
   const searchCompanyContacts = async () => {
+    if (!apiKeysStatus.gemini_set) {
+      alert("Clé Gemini requise pour utiliser la recherche par IA. Configurez-la dans ⚙️ Paramètres.");
+      return;
+    }
     if (!company.trim()) { alert("Entreprise manquante."); return; }
     setLoadingContacts(true);
     setContactsError(null);
     setCompanyContacts(null);
     try {
-      const res  = await fetch("http://localhost:8000/company-contacts", {
+      const res  = await fetch(`${API_BASE}/company-contacts`, {
         method:  "POST",
         headers: { "Content-Type": "application/json" },
         body:    JSON.stringify({ company }),
@@ -428,9 +443,21 @@ export default function NetworkingPage({ applications }) {
               {loading ? "Recherche…" : "🔍 Rechercher sur LinkedIn"}
             </button>
 
-            <button onClick={searchCompanyContacts} disabled={loadingContacts || !company.trim()}
-              className="bg-teal-600 text-white px-5 py-3 rounded-xl hover:bg-teal-700 disabled:opacity-50 font-semibold text-sm">
-              {loadingContacts ? "⏳ Recherche IA…" : "🤖 Contacts via IA"}
+            <button
+              onClick={searchCompanyContacts}
+              disabled={loadingContacts || !company.trim() || !apiKeysStatus.gemini_set}
+              title={!apiKeysStatus.gemini_set ? "Clé Gemini requise — configurez-la dans Paramètres" : ""}
+              className={`px-5 py-3 rounded-xl font-semibold text-sm ${
+                apiKeysStatus.gemini_set
+                  ? "bg-teal-600 hover:bg-teal-700 text-white disabled:opacity-50"
+                  : "bg-slate-300 text-slate-600 cursor-not-allowed"
+              }`}
+            >
+              {loadingContacts
+                ? "⏳ Recherche IA…"
+                : apiKeysStatus.gemini_set
+                  ? "🤖 Contacts via IA"
+                  : "🤖 Contacts via IA 🔒"}
             </button>
 
             <button onClick={() => setShowModal(true)}
@@ -439,9 +466,19 @@ export default function NetworkingPage({ applications }) {
             </button>
           </div>
 
+          {!apiKeysStatus.gemini_set && (
+            <p className="text-xs text-amber-600 mt-3">
+              🔒 La recherche IA est désactivée. Configurez votre clé Gemini dans{" "}
+              <button onClick={() => navigate("/settings")} className="underline font-medium">
+                ⚙️ Paramètres
+              </button>{" "}
+              pour l'activer.
+            </p>
+          )}
+
           <p className="text-xs text-gray-400 mt-3">
             <strong>LinkedIn</strong> : contacts de l'équipe RH/management. &nbsp;|&nbsp;
-            <strong>IA</strong> : site, carrières, emails et téléphones de l'entreprise (nécessite GEMINI_API_KEY côté serveur).
+            <strong>IA</strong> : site, carrières, emails et téléphones de l'entreprise (nécessite une clé Gemini).
           </p>
         </div>
 
@@ -458,7 +495,7 @@ export default function NetworkingPage({ applications }) {
             <p className="font-semibold mb-1">❌ Erreur de recherche IA</p>
             <p>{contactsError}</p>
             <p className="mt-2 text-xs text-red-500">
-              Vérifiez que GEMINI_API_KEY est défini dans l'environnement du serveur.
+              Vérifiez que votre clé Gemini est correctement configurée dans Paramètres.
             </p>
           </div>
         )}

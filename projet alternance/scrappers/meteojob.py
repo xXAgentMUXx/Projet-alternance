@@ -4,18 +4,30 @@ import re
 import sys
 import os
 
-SEARCH   = "alternance développeur"
-LOCATION = "Montpellier"
 MAX_RESULTS = 30
 
 
+def load_prefs() -> dict:
+    config_path = os.path.join(
+        os.path.dirname(os.path.abspath(__file__)), "..", "auto_search_config.json"
+    )
+    if os.path.exists(config_path):
+        try:
+            with open(config_path, "r", encoding="utf-8") as f:
+                return json.load(f)
+        except Exception:
+            pass
+    return {}
+
+
 def scrape_meteojob(keyword=None, location=None, max_results=MAX_RESULTS):
-    keyword  = keyword  or SEARCH
-    location = location or LOCATION
+    if not keyword or not location:
+        prefs    = load_prefs()
+        keyword  = keyword  or prefs.get("keyword")  or "alternance développeur"
+        location = location or prefs.get("city")     or "Montpellier"
 
     jobs = []
 
-    # Détection Docker : pas de display → headless forcé
     in_docker = os.path.exists("/.dockerenv") or os.environ.get("DOCKER", "") == "1"
 
     with sync_playwright() as p:
@@ -28,7 +40,7 @@ def scrape_meteojob(keyword=None, location=None, max_results=MAX_RESULTS):
         ]
 
         browser = p.chromium.launch(
-            headless=True,          # toujours True : headless=False crashe dans Docker
+            headless=True,
             slow_mo=100 if not in_docker else 0,
             args=launch_args,
         )
@@ -41,7 +53,7 @@ def scrape_meteojob(keyword=None, location=None, max_results=MAX_RESULTS):
             )
         )
 
-        print("Ouverture Meteojob...", file=sys.stderr)
+        print(f"[Meteojob] Recherche : '{keyword}' à '{location}'", file=sys.stderr)
 
         try:
             page.goto(
@@ -55,7 +67,6 @@ def scrape_meteojob(keyword=None, location=None, max_results=MAX_RESULTS):
             print(json.dumps([]))
             return []
 
-        # Fermer la popup cookies si présente
         try:
             page.locator("#tarteaucitronPersonalize2").click(timeout=3000)
             print("Cookies acceptés", file=sys.stderr)
@@ -64,8 +75,7 @@ def scrape_meteojob(keyword=None, location=None, max_results=MAX_RESULTS):
 
         page.wait_for_timeout(1500)
 
-        # Remplir le formulaire de recherche
-        print("Recherche...", file=sys.stderr)
+        print("Remplissage formulaire...", file=sys.stderr)
         try:
             inputs = page.locator("input")
             inputs.nth(0).fill(keyword)
@@ -83,7 +93,6 @@ def scrape_meteojob(keyword=None, location=None, max_results=MAX_RESULTS):
             pass
         page.wait_for_timeout(3000)
 
-        # Extraire les offres
         links = page.locator("a")
         seen  = set()
 
@@ -122,16 +131,16 @@ def scrape_meteojob(keyword=None, location=None, max_results=MAX_RESULTS):
 
         browser.close()
 
-    # Sauvegarde locale + sortie stdout pour main.py
-    output_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "meteojob_jobs.json")
+    output_path = os.path.join(
+        os.path.dirname(os.path.abspath(__file__)), "..", "meteojob_jobs.json"
+    )
     try:
         with open(output_path, "w", encoding="utf-8") as f:
             json.dump(jobs, f, indent=2, ensure_ascii=False)
     except Exception:
         pass
 
-    print(f"{len(jobs)} offres trouvées", file=sys.stderr)
-    # Sortie JSON sur stdout (lue par run_scraper via parse_json_stdout)
+    print(f"[Meteojob] {len(jobs)} offres trouvées", file=sys.stderr)
     print(json.dumps(jobs, ensure_ascii=False))
     return jobs
 

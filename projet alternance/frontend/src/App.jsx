@@ -8,6 +8,7 @@ import NetworkingPage from "./NetworkingPage";
 import CandidaturePage from "./CandidaturePage";
 import BlockedCompaniesPage from "./BlockedCompaniesPage";
 import NotificationSettings from "./NotificationSettings";
+import SettingsPage from "./SettingsPage";
 
 export default function App() {
   const [applications, setApplications] = React.useState(() => {
@@ -82,6 +83,7 @@ export default function App() {
           }
         />
         <Route path="/notifications" element={<NotificationSettings applications={applications} />} />
+        <Route path="/settings" element={<SettingsPage />} />
       </Routes>
     </BrowserRouter>
   );

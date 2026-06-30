@@ -198,14 +198,14 @@ function JobModal({ job, existing, getTimeAgo, onApply, onClose }) {
 }
 
 function BoardsConfigModal({ initialConfig, onSave, onClose }) {
-  const [ghBoards,  setGhBoards]  = React.useState(initialConfig.greenhouse_boards || []);
-  const [lvBoards,  setLvBoards]  = React.useState(initialConfig.lever_boards || []);
+  const [ghBoards,    setGhBoards]    = React.useState(initialConfig.greenhouse_boards || []);
+  const [lvBoards,    setLvBoards]    = React.useState(initialConfig.lever_boards || []);
   const [srCompanies, setSrCompanies] = React.useState(initialConfig.smartrecruiters_companies || []);
-  const [ghInput,   setGhInput]   = React.useState("");
-  const [lvInput,   setLvInput]   = React.useState("");
-  const [srInput,   setSrInput]   = React.useState("");
-  const [saving,    setSaving]    = React.useState(false);
-  const [saved,     setSaved]     = React.useState(false);
+  const [ghInput,     setGhInput]     = React.useState("");
+  const [lvInput,     setLvInput]     = React.useState("");
+  const [srInput,     setSrInput]     = React.useState("");
+  const [saving,      setSaving]      = React.useState(false);
+  const [saved,       setSaved]       = React.useState(false);
 
   const parseSmartRecruitersCompany = (value) => {
     const text = value.trim();
@@ -280,9 +280,7 @@ function BoardsConfigModal({ initialConfig, onSave, onClose }) {
               placeholder="https://boards.greenhouse.io/example"
               className="flex-1 border rounded-xl px-3 py-2 text-sm"
             />
-            <button onClick={addGh} className="bg-green-600 text-white px-3 py-2 rounded-xl text-sm hover:bg-green-700">
-              +
-            </button>
+            <button onClick={addGh} className="bg-green-600 text-white px-3 py-2 rounded-xl text-sm hover:bg-green-700">+</button>
           </div>
           {ghBoards.length === 0 ? (
             <p className="text-xs text-gray-400 italic">Aucun board configuré</p>
@@ -310,9 +308,7 @@ function BoardsConfigModal({ initialConfig, onSave, onClose }) {
               placeholder="https://jobs.lever.co/example"
               className="flex-1 border rounded-xl px-3 py-2 text-sm"
             />
-            <button onClick={addLv} className="bg-violet-600 text-white px-3 py-2 rounded-xl text-sm hover:bg-violet-700">
-              +
-            </button>
+            <button onClick={addLv} className="bg-violet-600 text-white px-3 py-2 rounded-xl text-sm hover:bg-violet-700">+</button>
           </div>
           {lvBoards.length === 0 ? (
             <p className="text-xs text-gray-400 italic">Aucun board configuré</p>
@@ -340,18 +336,16 @@ function BoardsConfigModal({ initialConfig, onSave, onClose }) {
               placeholder="BoschGroup"
               className="flex-1 border rounded-xl px-3 py-2 text-sm"
             />
-            <button onClick={addSr} className="bg-sky-600 text-white px-3 py-2 rounded-xl text-sm hover:bg-sky-700">
-              +
-            </button>
+            <button onClick={addSr} className="bg-sky-600 text-white px-3 py-2 rounded-xl text-sm hover:bg-sky-700">+</button>
           </div>
           {srCompanies.length === 0 ? (
-            <p className="text-xs text-gray-400 italic">Aucune entreprise configuree</p>
+            <p className="text-xs text-gray-400 italic">Aucune entreprise configurée</p>
           ) : (
             <div className="space-y-1">
               {srCompanies.map((company) => (
                 <div key={company} className="flex items-center justify-between bg-slate-50 rounded-lg px-3 py-1.5 text-xs">
                   <span className="truncate text-gray-700">{company}</span>
-                  <button onClick={() => setSrCompanies((p) => p.filter((c) => c !== company))} className="ml-2 text-red-500 hover:text-red-700 shrink-0">x</button>
+                  <button onClick={() => setSrCompanies((p) => p.filter((c) => c !== company))} className="ml-2 text-red-500 hover:text-red-700 shrink-0">✕</button>
                 </div>
               ))}
             </div>
@@ -392,6 +386,9 @@ export default function JobDashboard({
   const [filterType,      setFilterType]      = React.useState("tout");
   const [showBoardsModal, setShowBoardsModal] = React.useState(false);
   const [boardsConfig,    setBoardsConfig]    = React.useState(loadBoardsConfig);
+
+  // Clés API (Gemini / LBA)
+  const [apiKeysStatus, setApiKeysStatus] = React.useState({ lba_set: false, gemini_set: false });
 
   const [schedulerStatus, setSchedulerStatus] = React.useState({
     nextRunTime:   null,
@@ -455,9 +452,15 @@ export default function JobDashboard({
   }), [keyword, city, boardsConfig]);
 
   const hasConfiguredBoards = (platform) => {
-    if (platform === "Greenhouse") return boardsConfig.greenhouse_boards.length > 0;
-    if (platform === "Lever") return boardsConfig.lever_boards.length > 0;
+    if (platform === "Greenhouse")      return boardsConfig.greenhouse_boards.length > 0;
+    if (platform === "Lever")           return boardsConfig.lever_boards.length > 0;
     if (platform === "SmartRecruiters") return boardsConfig.smartrecruiters_companies.length > 0;
+    return true;
+  };
+
+  // Une plateforme est désactivée si elle nécessite une clé absente
+  const isPlatformEnabled = (platform) => {
+    if (platform === "Bonne Alternance") return apiKeysStatus.lba_set;
     return true;
   };
 
@@ -517,6 +520,14 @@ export default function JobDashboard({
     }
   }, [fetchAutoResults]);
 
+
+  // Chargement initial des clés API
+  React.useEffect(() => {
+    fetch(`${API_BASE_URL}/api-keys-config`)
+      .then((r) => r.json())
+      .then((d) => { if (d) setApiKeysStatus(d); })
+      .catch(() => {});
+  }, []);
 
   React.useEffect(() => {
     fetchSchedulerStatus();
@@ -586,6 +597,7 @@ export default function JobDashboard({
 
   const fetchPlatform = async (platform) => {
     if (!schedulerStatus.manualEnabled) return;
+    if (!isPlatformEnabled(platform)) return;
     setLoading(true);
     try {
       const res  = await fetch(`${API_BASE_URL}/search/${platform}`, {
@@ -627,10 +639,24 @@ export default function JobDashboard({
       )}
 
       <div className="flex justify-center gap-3 mb-6 flex-wrap">
-        <button onClick={() => navigate("/cover-letter")}
-          className="bg-indigo-600 text-white px-5 py-2 rounded-xl hover:bg-indigo-700 text-sm">
-          Cover Letter
+        <button
+          onClick={() => {
+            if (!apiKeysStatus.gemini_set) {
+              alert("Clé Gemini requise pour générer une lettre de motivation. Configurez-la dans ⚙️ Paramètres.");
+              return;
+            }
+            navigate("/cover-letter");
+          }}
+          className={`px-5 py-2 rounded-xl text-sm text-white ${
+            apiKeysStatus.gemini_set
+              ? "bg-indigo-600 hover:bg-indigo-700"
+              : "bg-slate-400 cursor-not-allowed"
+          }`}
+          title={!apiKeysStatus.gemini_set ? "Clé Gemini requise — configurez-la dans Paramètres" : ""}
+        >
+          Cover Letter{!apiKeysStatus.gemini_set && " 🔒"}
         </button>
+
         <button onClick={() => navigate("/applications")}
           className="bg-emerald-600 text-white px-5 py-2 rounded-xl hover:bg-emerald-700 text-sm">
           Applications
@@ -648,6 +674,10 @@ export default function JobDashboard({
           className="bg-slate-700 text-white px-5 py-2 rounded-xl hover:bg-slate-800 text-sm flex items-center gap-1.5"
         >
           ⚙️ Boards / entreprises
+        </button>
+        <button onClick={() => navigate("/settings")}
+          className="bg-gray-600 text-white px-5 py-2 rounded-xl hover:bg-gray-700 text-sm">
+          ⚙️ Paramètres
         </button>
       </div>
 
@@ -706,8 +736,8 @@ export default function JobDashboard({
                 filterType === t ? "bg-blue-600 text-white" : "bg-white text-gray-600 border hover:bg-slate-50"
               }`}
             >
-              {t === "tout" && "Tout"}
-              {t === "offre" && "Offres d'emploi"}
+              {t === "tout"      && "Tout"}
+              {t === "offre"     && "Offres d'emploi"}
               {t === "spontanee" && "Candidatures spontanées"}
             </button>
           ))}
@@ -727,16 +757,23 @@ export default function JobDashboard({
           const notApplied  = visible.filter((j) => !findApplication(j));
 
           const isExternal = platform === "Greenhouse" || platform === "Lever" || platform === "SmartRecruiters";
+          const isLba      = platform === "Bonne Alternance";
+          const lbaLocked  = isLba && !apiKeysStatus.lba_set;
 
           return (
-            <div key={platform} className="bg-white rounded-2xl shadow p-4 flex flex-col">
+            <div key={platform} className={`bg-white rounded-2xl shadow p-4 flex flex-col ${lbaLocked ? "opacity-60" : ""}`}>
 
               <div className="flex items-center justify-between mb-3">
                 <div className="flex items-center gap-1.5">
-                  {platform === "Greenhouse" && <span className="text-base">🟢</span>}
-                  {platform === "Lever"      && <span className="text-base">🟣</span>}
+                  {platform === "Greenhouse"      && <span className="text-base">🟢</span>}
+                  {platform === "Lever"           && <span className="text-base">🟣</span>}
                   {platform === "SmartRecruiters" && <span className="text-base">SR</span>}
                   <h2 className="text-base font-bold">{platform}</h2>
+                  {lbaLocked && (
+                    <span className="text-xs bg-amber-100 text-amber-700 px-2 py-0.5 rounded-full font-medium ml-1">
+                      🔒 Clé LBA requise
+                    </span>
+                  )}
                 </div>
                 {platformJobs.length > 0 && (
                   <span className="text-xs bg-slate-100 text-slate-600 px-2 py-0.5 rounded-full">
@@ -745,48 +782,59 @@ export default function JobDashboard({
                 )}
               </div>
 
-              <button
-                onClick={() => {
-                  if (isExternal) {
-                    setShowBoardsModal(true);
-                  } else {
-                    fetchPlatform(platform);
-                  }
-                }}
-                className={`w-full mb-3 py-2 rounded-xl text-sm ${
-                  schedulerStatus.manualEnabled && !loading
-                    ? platform === "Greenhouse"
-                      ? "bg-green-600 hover:bg-green-700 text-white"
-                      : platform === "Lever"
-                        ? "bg-violet-600 hover:bg-violet-700 text-white"
-                        : platform === "SmartRecruiters"
-                          ? "bg-sky-600 hover:bg-sky-700 text-white"
-                          : "bg-purple-600 hover:bg-purple-700 text-white"
-                    : "bg-slate-300 text-slate-600 cursor-not-allowed"
-                }`}
-                disabled={!schedulerStatus.manualEnabled || loading}
-              >
-                {isExternal
-                  ? `⚙️ Configurer ${platform}`
-                  : `Rechercher ${platform}`}
-              </button>
-
-              {isExternal && (
+              {lbaLocked ? (
                 <button
-                  onClick={() => fetchPlatform(platform)}
-                  className={`w-full mb-3 py-2 rounded-xl text-sm ${
-                    schedulerStatus.manualEnabled && !loading && hasConfiguredBoards(platform)
-                      ? platform === "Greenhouse"
-                        ? "bg-emerald-600 hover:bg-emerald-700 text-white"
-                        : platform === "Lever"
-                          ? "bg-purple-600 hover:bg-purple-700 text-white"
-                          : "bg-sky-600 hover:bg-sky-700 text-white"
-                      : "bg-slate-300 text-slate-600 cursor-not-allowed"
-                  }`}
-                  disabled={!schedulerStatus.manualEnabled || loading || !hasConfiguredBoards(platform)}
+                  onClick={() => navigate("/settings")}
+                  className="w-full mb-3 py-2 rounded-xl text-sm bg-amber-500 hover:bg-amber-600 text-white"
                 >
-                  {`Rechercher manuellement ${platform}`}
+                  ⚙️ Configurer la clé LBA
                 </button>
+              ) : (
+                <>
+                  <button
+                    onClick={() => {
+                      if (isExternal) {
+                        setShowBoardsModal(true);
+                      } else {
+                        fetchPlatform(platform);
+                      }
+                    }}
+                    className={`w-full mb-3 py-2 rounded-xl text-sm ${
+                      schedulerStatus.manualEnabled && !loading
+                        ? platform === "Greenhouse"
+                          ? "bg-green-600 hover:bg-green-700 text-white"
+                          : platform === "Lever"
+                            ? "bg-violet-600 hover:bg-violet-700 text-white"
+                            : platform === "SmartRecruiters"
+                              ? "bg-sky-600 hover:bg-sky-700 text-white"
+                              : "bg-purple-600 hover:bg-purple-700 text-white"
+                        : "bg-slate-300 text-slate-600 cursor-not-allowed"
+                    }`}
+                    disabled={!schedulerStatus.manualEnabled || loading}
+                  >
+                    {isExternal
+                      ? `⚙️ Configurer ${platform}`
+                      : `Rechercher ${platform}`}
+                  </button>
+
+                  {isExternal && (
+                    <button
+                      onClick={() => fetchPlatform(platform)}
+                      className={`w-full mb-3 py-2 rounded-xl text-sm ${
+                        schedulerStatus.manualEnabled && !loading && hasConfiguredBoards(platform)
+                          ? platform === "Greenhouse"
+                            ? "bg-emerald-600 hover:bg-emerald-700 text-white"
+                            : platform === "Lever"
+                              ? "bg-purple-600 hover:bg-purple-700 text-white"
+                              : "bg-sky-600 hover:bg-sky-700 text-white"
+                          : "bg-slate-300 text-slate-600 cursor-not-allowed"
+                      }`}
+                      disabled={!schedulerStatus.manualEnabled || loading || !hasConfiguredBoards(platform)}
+                    >
+                      {`Rechercher manuellement ${platform}`}
+                    </button>
+                  )}
+                </>
               )}
 
               {platform === "Bonne Alternance" && platformJobs.length > 0 && (
@@ -805,7 +853,11 @@ export default function JobDashboard({
               )}
 
               <div className="space-y-2 overflow-y-auto flex-1" style={{ maxHeight: "60vh" }}>
-                {visible.length === 0 ? (
+                {lbaLocked ? (
+                  <p className="text-amber-600 text-center text-sm py-4">
+                    Configurez votre clé La Bonne Alternance dans les Paramètres pour activer ce scraper.
+                  </p>
+                ) : visible.length === 0 ? (
                   <p className="text-gray-400 text-center text-sm py-4">
                     {isExternal && platformJobs.length === 0 && !hasConfiguredBoards(platform)
                       ? "Aucun board configuré — cliquez sur le bouton ci-dessus"

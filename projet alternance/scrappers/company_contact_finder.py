@@ -1,21 +1,3 @@
-#!/usr/bin/env python3
-"""
-Recherche de contacts d'entreprise via l'API Google Gemini + Google Search.
-
-Usage :
-    py company_contact_finder.py "Capgemini"
-    py company_contact_finder.py "Capgemini" --json
-    py company_contact_finder.py "Capgemini" "SNCF" --output contacts.json
-
-Nécessite :
-    pip install -U google-genai
-
-Clé API gratuite :
-    https://aistudio.google.com/apikey
-
-La clé doit être dans la variable d'environnement GEMINI_API_KEY.
-"""
-
 import sys
 import os
 import json
@@ -25,9 +7,11 @@ import difflib
 
 from google import genai
 from google.genai import types
-from dotenv import load_dotenv
 
-load_dotenv()
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+
+from main import get_api_key as read_api_key
+
 
 CACHE_FILE = "company_cache.json"
 
@@ -289,7 +273,7 @@ def get_api_key(cli_key: str | None) -> str:
     if cli_key:
         return cli_key
 
-    return os.getenv("GEMINI_API_KEY", "")
+    return read_api_key("GEMINI_API_KEY")
 
 def main():
     parser = argparse.ArgumentParser(

@@ -1,6 +1,6 @@
 from unittest import result
 
-from fastapi import FastAPI, UploadFile, File, Form
+from fastapi import FastAPI, HTTPException, UploadFile, File, Form
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from staffspy import LinkedInAccount
@@ -21,6 +21,7 @@ from scrappers.smart_recruiter import get_jobs as get_smartrecruiters_jobs
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from fastapi.responses import StreamingResponse
 import asyncio
+import base64
 
 app = FastAPI()
 
@@ -71,6 +72,10 @@ NOTIFICATION_CONFIG_FILE = os.path.join(BASE_DIR, "notification_config.json")
 WTTJ_SLUGS_FILE = os.path.join(BASE_DIR, "wttj_slugs.json")
 BOARDS_CONFIG_FILE = os.path.join(BASE_DIR, "boards_config.json")
 SMARTRECRUITERS_CONFIG_FILE = os.path.join(BASE_DIR, "smartrecruiters_config.json")
+
+API_KEYS_FILE       = os.path.join(BASE_DIR, "api_keys.json")
+AUTO_CONFIG_FILE    = os.path.join(BASE_DIR, "auto_search_config.json")
+SESSION_FILE        = os.path.join(BASE_DIR, "session.pkl")
 
 scheduler = None
 
@@ -162,9 +167,20 @@ def parse_json_stdout(stdout: str):
     text = stdout.strip()
     if not text:
         return None
+    try:
+        return json.loads(text)
+    except json.JSONDecodeError:
+        pass
 
-    import re
-
+    starts = [i for i in (text.find("["), text.find("{")) if i != -1]
+    if starts:
+        start = min(starts)
+        candidate = text[start:]
+        try:
+            return json.loads(candidate)
+        except json.JSONDecodeError as e:
+            print(f"[!] parse_json_stdout: échec depuis le premier '[' ou '{{' : {e}")
+ 
     for start in [text.rfind("["), text.rfind("{")]:
         if start == -1:
             continue
@@ -173,19 +189,18 @@ def parse_json_stdout(stdout: str):
             return json.loads(candidate)
         except json.JSONDecodeError:
             continue
-
-    last_line = text.splitlines()[-1]
+ 
     try:
-        return json.loads(last_line)
+        return json.loads(text.splitlines()[-1])
     except Exception:
-        return None
+        pass
+    print(f"[!] parse_json_stdout: JSON invalide. Extrait (premiers 300 / derniers 300 caractères):")
+    print(f"    DEBUT: {text[:300]!r}")
+    print(f"    FIN  : {text[-300:]!r}")
+    return None
 
 
 def job_fingerprint(job: dict) -> str:
-    """
-    Génère une clé unique pour un job.
-    Basée sur url si disponible, sinon titre+company.
-    """
     url = (job.get("url") or "").strip()
     if url:
         return hashlib.md5(url.encode()).hexdigest()
@@ -198,7 +213,6 @@ def job_fingerprint(job: dict) -> str:
 
 
 def load_seen_jobs() -> dict:
-    """Charge le fichier des jobs déjà vus {fingerprint: platform}."""
     if os.path.exists(SEEN_JOBS_FILE):
         try:
             with open(SEEN_JOBS_FILE, "r", encoding="utf-8") as f:
@@ -209,16 +223,11 @@ def load_seen_jobs() -> dict:
 
 
 def save_seen_jobs(seen: dict):
-    """Sauvegarde le fichier des jobs déjà vus."""
     with open(SEEN_JOBS_FILE, "w", encoding="utf-8") as f:
         json.dump(seen, f, indent=2, ensure_ascii=False)
 
 
 def mark_new_jobs(jobs: list, platform: str) -> list:
-    """
-    Ajoute le champ 'is_new': True/False à chaque job.
-    Met à jour le fichier seen_jobs.json.
-    """
     seen = load_seen_jobs()
     result = []
     updated = False
@@ -629,7 +638,7 @@ def run_scraper(script_name, keyword, city, board_urls=None):
     try:
         if script_name == "linkedin":
             script_path = os.path.join(
-                BASE_DIR, "scrappers", "JobSpy-main", "linkedin_jobs.py"
+                BASE_DIR, "scrappers", "scrappers-hard", "linkedin_jobs.py"
             )
             json_file = JSON_FILES[script_name]
 
@@ -657,7 +666,7 @@ def run_scraper(script_name, keyword, city, board_urls=None):
 
         elif script_name == "indeed":
             script_path = os.path.join(
-                BASE_DIR, "scrappers", "JobSpy-main", "indeed_jobs.py"
+                BASE_DIR, "scrappers", "scrappers-hard", "indeed_jobs.py"
             )
             json_file = JSON_FILES[script_name]
 
@@ -690,7 +699,7 @@ def run_scraper(script_name, keyword, city, board_urls=None):
                 return []
 
             script_path = os.path.join(
-                BASE_DIR, "scrappers", "scraping-jobs-master", "index.py"
+                BASE_DIR, "scrappers", "scrappers-apec", "index.py"
             )
 
             result = subprocess.run(
@@ -721,7 +730,7 @@ def run_scraper(script_name, keyword, city, board_urls=None):
 
         elif script_name in ("hellowork", "francetravail"):
             script_path = os.path.join(
-                BASE_DIR, "scrappers", "job-scraper-main", "main.py"
+                BASE_DIR, "scrappers", "scrapers", "main.py"
             )
 
             result = subprocess.run(
@@ -768,7 +777,7 @@ def run_scraper(script_name, keyword, city, board_urls=None):
             all_jobs = []
             boards = sanitize_board_urls(board_urls, "https://boards.greenhouse.io/") or GREENHOUSE_BOARDS
             for board_url in boards:
-                script_path = os.path.join(BASE_DIR, "scrappers", "greenhouse.io-scraper-main", "main.py")
+                script_path = os.path.join(BASE_DIR, "scrappers", "greenhouse.py")
                 result = subprocess.run(
                     ["python", script_path, keyword, board_url],
                     capture_output=True, text=True, cwd=BASE_DIR,
@@ -789,7 +798,7 @@ def run_scraper(script_name, keyword, city, board_urls=None):
             all_jobs = []
             boards = sanitize_board_urls(board_urls, "https://jobs.lever.co/") or LEVER_BOARDS
             for board_url in boards:
-                script_path = os.path.join(BASE_DIR, "scrappers", "greenhouse.io-scraper-main", "lever.py")
+                script_path = os.path.join(BASE_DIR, "scrappers", "lever.py")
                 result = subprocess.run(
                     ["python", script_path, keyword, board_url],
                     capture_output=True, text=True, cwd=BASE_DIR,
@@ -1275,7 +1284,6 @@ class WttjSlugsRequest(BaseModel):
 
 @app.get("/wttj-slugs")
 def get_wttj_slugs():
-    """Retourne la liste des slugs WTTJ configurés."""
     if os.path.exists(WTTJ_SLUGS_FILE):
         try:
             with open(WTTJ_SLUGS_FILE, "r", encoding="utf-8") as f:
@@ -1287,7 +1295,6 @@ def get_wttj_slugs():
 
 @app.post("/wttj-slugs")
 def set_wttj_slugs(data: WttjSlugsRequest):
-    """Sauvegarde la liste des slugs WTTJ à scraper."""
     import re as _re
     valid = [
         s.strip().lower()
@@ -1304,7 +1311,6 @@ def set_wttj_slugs(data: WttjSlugsRequest):
 
 @app.get("/wttj-companies")
 def get_wttj_companies():
-    """Retourne la liste des entreprises WTTJ disponibles (depuis le cache)."""
     companies_file = os.path.join(BASE_DIR, "wttj_companies.json")
     if not os.path.exists(companies_file):
         return {"companies": [], "message": "Cache non disponible, lancez une première recherche."}
@@ -1490,30 +1496,31 @@ def generate_message(data: MessageRequest):
     
 
 def scheduled_search():
-    global auto_search_running
+    cfg = {"keyword": "alternance développeur", "city": "Montpellier", "scrapers": []}
+    if os.path.exists(AUTO_CONFIG_FILE):
+        try:
+            with open(AUTO_CONFIG_FILE, "r", encoding="utf-8") as f:
+                cfg = json.load(f)
+        except Exception:
+            pass
 
-    keyword = "alternance développeur"
-    city = "Montpellier"
+    keyword  = cfg.get("keyword") or "alternance développeur"
+    city     = cfg.get("city")    or "Montpellier"
+    selected = cfg.get("scrapers") or []  
 
-    auto_search_running = True
-
-    print("\n===================================")
-    print("Recherche automatique démarrée")
-    print("===================================")
-
-    scrapers = [
-        "linkedin",
-        "indeed",
-        "meteojob",
-        "bonne_alternance",
-        "apec",
-        "hellowork",
-        "francetravail",
-        "greenhouse",
-        "lever",
-        "wttj",
-        "smartrecruiters",
+    all_scrapers = [
+        "linkedin", "indeed", "meteojob", "bonne_alternance",
+        "apec", "hellowork", "francetravail",
+        "greenhouse", "lever", "wttj", "smartrecruiters",
     ]
+
+    SCRAPER_TO_KEY = {
+        "LinkedIn": "linkedin", "Indeed": "indeed",
+        "Meteojob": "meteojob", "Bonne Alternance": "bonne_alternance",
+        "APEC": "apec", "HelloWork": "hellowork",
+        "France Travail": "francetravail", "Greenhouse": "greenhouse",
+        "Lever": "lever", "WTTJ": "wttj", "SmartRecruiters": "smartrecruiters",
+    }
 
     auto_summary = {
         "timestamp": datetime.now(timezone.utc).isoformat(),
@@ -1521,6 +1528,14 @@ def scheduled_search():
         "total_jobs": 0,
         "total_new_jobs": 0,
     }
+
+    if selected:
+        scrapers = [SCRAPER_TO_KEY[s] for s in selected if s in SCRAPER_TO_KEY]
+    else:
+        scrapers = all_scrapers
+
+    global auto_search_running
+    auto_search_running = True
 
     def run_one(scraper: str):
         try:
@@ -1617,7 +1632,6 @@ def scheduled_search():
 
 @app.get("/auto-results")
 def get_auto_results():
-    """Retourne les résultats de la dernière recherche automatique (tous scrapers)."""
     platform_map = {
         "LinkedIn":          "linkedin",
         "Indeed":            "indeed",
@@ -1758,3 +1772,94 @@ def stop_scheduler():
     if scheduler is not None:
         scheduler.shutdown(wait=False)
         scheduler = None
+
+def load_api_keys() -> dict:
+    if not os.path.exists(API_KEYS_FILE):
+        return {}
+    try:
+        with open(API_KEYS_FILE, "r", encoding="utf-8") as f:
+            return json.load(f)
+    except Exception:
+        return {}
+
+def save_api_keys(keys: dict):
+    with open(API_KEYS_FILE, "w", encoding="utf-8") as f:
+        json.dump(keys, f, ensure_ascii=False, indent=2)
+
+def get_api_key(name: str) -> str:
+    return load_api_keys().get(name) or os.getenv(name, "")
+
+class ApiKeysRequest(BaseModel):
+    gemini_api_key: str | None = None
+    lba_api_key:    str | None = None
+
+class AutoSearchConfigRequest(BaseModel):
+    keyword:  str       = ""
+    city:     str       = ""
+    scrapers: list[str] = []
+
+class LinkedInSessionUploadRequest(BaseModel):
+    content: str  
+
+@app.get("/api-keys-config")
+def get_api_keys_config():
+    keys = load_api_keys()
+    def mask(k):
+        if not k: return ""
+        return k[:6] + "•" * max(0, len(k) - 6)
+    return {
+        "gemini_api_key": mask(keys.get("GEMINI_API_KEY", "")),
+        "lba_api_key":    mask(keys.get("LBA_API_KEY", "")),
+        "gemini_set":     bool(keys.get("GEMINI_API_KEY")),
+        "lba_set":        bool(keys.get("LBA_API_KEY")),
+    }
+
+@app.post("/api-keys-config")
+def set_api_keys_config(data: ApiKeysRequest):
+    keys = load_api_keys()
+    if data.gemini_api_key is not None:
+        keys["GEMINI_API_KEY"] = data.gemini_api_key
+    if data.lba_api_key is not None:
+        keys["LBA_API_KEY"] = data.lba_api_key
+    save_api_keys(keys)
+    return {"saved": True}
+
+@app.get("/linkedin-session/status")
+def linkedin_session_status():
+    return {"exists": os.path.exists(SESSION_FILE)}
+
+@app.post("/linkedin-session/upload")
+def linkedin_session_upload(data: LinkedInSessionUploadRequest):
+    try:
+        raw = base64.b64decode(data.content)
+        with open(SESSION_FILE, "wb") as f:
+            f.write(raw)
+        return {"ok": True}
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
+
+@app.delete("/linkedin-session")
+def linkedin_session_delete():
+    if os.path.exists(SESSION_FILE):
+        os.remove(SESSION_FILE)
+    return {"ok": True}
+
+@app.get("/auto-search-config")
+def get_auto_search_config():
+    if not os.path.exists(AUTO_CONFIG_FILE):
+        return {"keyword": "alternance développeur", "city": "Montpellier", "scrapers": [
+            "LinkedIn", "Indeed", "France Travail", "APEC", "Meteojob",
+            "HelloWork", "Greenhouse", "Lever", "SmartRecruiters", "WTTJ",
+        ]}
+    try:
+        with open(AUTO_CONFIG_FILE, "r", encoding="utf-8") as f:
+            return json.load(f)
+    except Exception:
+        return {"keyword": "", "city": "", "scrapers": []}
+
+@app.post("/auto-search-config")
+def set_auto_search_config(data: AutoSearchConfigRequest):
+    cfg = {"keyword": data.keyword, "city": data.city, "scrapers": data.scrapers}
+    with open(AUTO_CONFIG_FILE, "w", encoding="utf-8") as f:
+        json.dump(cfg, f, ensure_ascii=False, indent=2)
+    return {"saved": True}
